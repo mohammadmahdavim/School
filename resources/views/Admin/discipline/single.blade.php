@@ -83,7 +83,7 @@
                         </td>
                         <td>{{$disiplin->user->f_name}} - {{$disiplin->user->l_name}}</td>
                         <td>{{$disiplin->CDisciplines->name}}</td>
-                        <td style="background-color: #b91d19;color: black">{{($disiplin->mark)/10}}</td>
+                        <td style="background-color: #b91d19;color: black">{{($disiplin->mark)}}</td>
                         <td>{{$disiplin->created_at->toDateString()}}</td>
                         <td style="text-align: center">
                             <div style="text-align: center">
@@ -103,7 +103,7 @@
                     </td>
                     <td></td>
                     <td></td>
-                    <td style="background-color: lightskyblue ;color: black">{{(100-$total)/5}}</td>
+                    <td style="background-color: lightskyblue ;color: black">{{(100-$total)}}</td>
                     <td style="text-align: center"></td>
                     <td></td>
 

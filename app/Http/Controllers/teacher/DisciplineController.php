@@ -77,5 +77,10 @@ class DisciplineController extends Controller
 
         return back();
     }
+
+    public function teacher()
+    {
+
+    }
 }
 

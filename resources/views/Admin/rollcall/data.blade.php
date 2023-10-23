@@ -46,6 +46,16 @@
             <form action="/admin/roolcall_report">
                 <div class="row">
                     <div class="col-md-3">
+                        <label>دانش آموز</label>
+
+                        <select name="user_id"  class="js-example-basic-single">
+                            <option></option>
+                            @foreach($users as $user)
+                                <option @if($user->id==request()->user_id) selected @endif value="{{$user->id}}">{{$user->f_name}} {{$user->l_name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
                         <label>از تاریخ</label>
                         <input class="form-control" name="date_from" id="date-picker-shamsi" autocomplete="off"
                                value="{{request()->date_from}}">
@@ -146,7 +156,7 @@
                                     <br>
                                     <br>
                                     <?php
-                                    $i = $i+1;
+                                    $i = $i + 1;
                                     ?>
                                 @endforeach
                             </td>

@@ -287,6 +287,20 @@
                     @endforeach
                 </ul>
             </li>
+                <li>
+                    <a href="/teacher/students">
+                        <i class="icon-users4"></i> &nbsp &nbsp
+                        <span> لیست ثبت انضباط</span></a>
+                    <ul>
+                        @foreach($data->unique('class_id') as $cls)
+                            <li>
+                                <a href="/teacher/discipline/create/{{$cls->class[0]->classnamber}}">
+                                    {{$cls->class[0]->paye}}-{{$cls->class[0]->classnamber}}
+                                </a></li>
+                        @endforeach
+                    </ul>
+                </li>
+
             <li>
                 <a href="#"><i class="icon-pencil7"></i> &nbsp &nbsp <span
                     >نمره</span></a>

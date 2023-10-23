@@ -536,6 +536,9 @@ class AdminController extends Controller
             ->when($request->get('class'), function ($query) use ($request) {
                 $query->where('class_id', $request->class);
             })
+            ->when($request->get('user_id'), function ($query) use ($request) {
+                $query->where('user_id', $request->user_id);
+            })
             ->when($request->get('date_from'), function ($query) use ($request) {
                 $query->where('updated_at', '>=', str_replace('/', '-', $request->date_from));
             })
@@ -550,6 +553,9 @@ class AdminController extends Controller
             ->when($request->get('class'), function ($query) use ($request) {
                 $query->where('class_id', $request->class);
             })
+            ->when($request->get('user_id'), function ($query) use ($request) {
+                $query->where('user_id', $request->user_id);
+            })
             ->when($request->get('date_from'), function ($query) use ($request) {
                 $query->where('updated_at', '>=', str_replace('/', '-', $request->date_from));
             })
@@ -559,7 +565,9 @@ class AdminController extends Controller
             ->orderByDesc('user_id')
             ->get();
         $classR = clas::all();
-        return view('Admin.rollcall.data', compact('data', 'classR','details'));
+        $users = user::where('role', 'دانش آموز')->get();
+
+        return view('Admin.rollcall.data', compact('data', 'classR','details','users'));
 
     }
 

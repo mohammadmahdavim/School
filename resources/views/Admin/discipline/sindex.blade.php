@@ -98,7 +98,7 @@
                             {{\App\User::where('id',$discipline->user_id)->first()['l_name']}}
                             - {{\App\User::where('id',$discipline->user_id)->first()['f_name']}}</td>
                         <td>{{\App\CDiscipline::where('id',$discipline->disciplines_id)->first()['name']}}</td>
-                        <td>{{(\App\CDiscipline::where('id',$discipline->disciplines_id)->first()['mark'])/5}}</td>
+                        <td>{{(\App\CDiscipline::where('id',$discipline->disciplines_id)->first()['mark'])}}</td>
                         <td>{{$discipline->date}}</td>
                         <td>{{$discipline->description}}</td>
 

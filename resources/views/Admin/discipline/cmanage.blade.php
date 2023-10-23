@@ -75,7 +75,7 @@
                             <td><input class="input-group-text" dir="rtl" id="name" name="name"
                                        value="{{$discipline->name}} "></td>
                             <td>
-                                <input style="text-align: center" type="number" value="{{$discipline->mark/5}}"   name="mark" id="mark" step="0.01" class="form-control">
+                                <input style="text-align: center" type="number" value="{{$discipline->mark}}"   name="mark" id="mark" step="0.01" class="form-control">
                             </td>
                             <td><input class="input-group-text" dir="rtl" id="description" name="description"
                                        value="{{$discipline->description}} "></td>

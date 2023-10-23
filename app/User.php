@@ -100,6 +100,12 @@ class User extends Authenticatable
         return $this->hasMany(RollCall::class)->where('created_at','>=', Carbon::now()->toDateString())->where('author', auth()->user()->id);
     }
 
+    public function rollcalltime()
+    {
+        return $this->hasMany(RollCall::class)
+            ->where('created_at','>=', Carbon::now()->subMinutes(90)->toDateTimeString())
+            ->where('author', auth()->user()->id);
+    }
 
     public function student_class()
     {

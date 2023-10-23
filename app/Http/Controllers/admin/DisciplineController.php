@@ -68,7 +68,7 @@ class DisciplineController extends Controller
         CDiscipline::create([
             'name' => request('name'),
             'description' => request('description'),
-            'mark' => (request('mark') * 5),
+            'mark' => request('mark'),
             'created_at' => Jalalian::now(),
             'updated_at' => Jalalian::now(),
         ]);
@@ -151,7 +151,7 @@ class DisciplineController extends Controller
         $cdiscipline->update([
             'name' => request('name'),
             'description' => request('description'),
-            'mark' => (request('mark') * 5),
+            'mark' => request('mark'),
             'updated_at' => Jalalian::now(),
         ]);
         alert()->success('آیتم مورد نظر با موفقیت ویرایش شد.', 'ویرایش آیتم انضباطی')->autoclose(3000);

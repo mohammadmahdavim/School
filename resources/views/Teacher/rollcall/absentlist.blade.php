@@ -122,7 +122,7 @@
                                 <td>{{$user->user->f_name}}</td>
                                 <td>{{$user->user->l_name}}</td>
 
-                                <td>{{(\Morilog\Jalali\Jalalian::fromCarbon($user->created_at))->format('%A, %d %B %y')}}</td>
+                                <td>{{(\Morilog\Jalali\Jalalian::fromCarbon($user->created_at))}}</td>
                           @endif
                             </tr>
                         @endforeach

@@ -131,12 +131,13 @@
                             <td>{{$user->f_name}}</td>
                             <td>{{$user->l_name}}</td>
                             <td>
-{{--@dd($user->rollcall[0]->created_at,Carbon\Carbon::now()->toDateString())--}}
-                                @if(isset($user->rollcall[0]) && $user->rollcall[0]->created_at->toDateString()==Carbon\Carbon::now()->toDateString())
+                                {{--@dd($user->rollcall[0]->created_at,Carbon\Carbon::now()->toDateString())--}}
+                                @if(
+    isset($user->rollcalltime[0]))
 
-                                        <a href="/teacher/students/rollcall/absenttopresent/{{$user->rollcall[0]->id}}">
-                                            <span style="color:red">غایب</span>
-                                        </a>
+                                    <a href="/teacher/students/rollcall/absenttopresent/{{$user->rollcalltime[0]->id}}">
+                                        <span style="color:red">غایب</span>
+                                    </a>
 
                                 @else
                                     <a href="/teacher/students/rollcall/presenttoabsent/{{$user->id}}">

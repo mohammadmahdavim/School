@@ -84,7 +84,7 @@
                             </td>
                             <td>{{$user->user->f_name}}</td>
                             <td>{{$user->user->l_name}}</td>
-                            <td style="background-color: #b91d19;color: black">{{(100-($user->sum))/5}}</td>
+                            <td style="background-color: #b91d19;color: black">{{(20-($user->sum))}}</td>
                             <td style="text-align: center"><a href="/admin/discipline/single/{{$user->user_id}}">
                                     <button class="btn btn-outline-dark">کلیک کنید</button>
                                 </a></td>
