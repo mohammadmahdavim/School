@@ -70,10 +70,10 @@ class StudentsController extends Controller
         $date = $year . '-' . $mounth . '-' . $day;
         $enddate = $year . '/' . $mounth . '/' . $day;
         $day = Jalalian::forge('today')->format('%A');
-        $day=Day::where('name',$day)->first();
+        $day = Day::where('name', $day)->first();
         $onlines = OnlineClass::where('date', '<=', $date)->where('enddate', '>=', $enddate)->where('status', 1)
             ->where('class_id', $class)
-            ->where('day_id',$day->id)
+            ->where('day_id', $day->id)
             ->orderby('start')
             ->with('author_class')
             ->get();
@@ -84,7 +84,7 @@ class StudentsController extends Controller
             ->get();
 
         $patterns = pattern::where('class_id', $class)->where('date_from', '<=', $enddate)->where('date_to', '>=', $enddate)->where('status', 1)->get();
-        return view('student.index', compact('modal','patterns', 'messages', 'days', 'udays', 'doros', 'onlines','meetings'));
+        return view('student.index', compact('modal', 'patterns', 'messages', 'days', 'udays', 'doros', 'onlines', 'meetings'));
     }
 
     public function dars($id)
@@ -408,10 +408,20 @@ class StudentsController extends Controller
         }
         $data = RollCall::where('user_id', $id)->with('user')->orderByDesc('created_at')->get();
         if (count($data) == 0) {
-
-            return back()->withErrors('اطلاعاتی وجود ندارد');
+            alert()->warning('اطلاعاتی وجود ندارد.');
+            return redirect('/student')->withErrors('اطلاعاتی وجود ندارد');
         }
         return view('student.absentlist', compact('data'));
+    }
+
+    public function rollcall_description(Request $request,$id)
+    {
+        $row=RollCall::where('id',$id)->first();
+        $row->update([
+            'description'=>$request->description
+        ]);
+        alert()->success('اطلاعات ثبت شد.');
+        return back();
     }
 
 

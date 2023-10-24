@@ -258,6 +258,7 @@ Route::group(['prefix' => 'student', 'middleware' => ['ExpireCheck', 'StatusChec
 //    discipline
     $this::get('discipline', 'StudentsController@discipline');
     $this::get('rollcall', 'StudentsController@rollcall');
+    $this::post('absent/description/{id}', 'StudentsController@rollcall_description');
 //    end discipline
 
     //karname
@@ -302,6 +303,9 @@ Route::group(['prefix' => 'student', 'middleware' => ['ExpireCheck', 'StatusChec
 
 Route::group(['prefix' => 'admin', 'middleware' => ['ExpireCheck', 'StatusCheck'], 'namespace' => 'admin'], function () {
 
+    $this::get('present_list', 'AdminController@present_list');
+
+    $this::post('change_password', 'AdminController@change_password');
     $this::get('roolcall_report', 'AdminController@roolcall_report');
     $this::get('disiplin_report', 'AdminController@disiplin_report');
 
@@ -799,6 +803,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['ExpireCheck', 'StatusCheck'
 
 Route::group(['prefix' => 'teacher', 'middleware' => ['TecherCheck', 'ExpireCheck', 'StatusCheck'], 'namespace' => 'teacher'], function () {
 
+    $this::get('/students/rollcall/done/{id}', 'RollCallController@done')->name('online_class');
 
     //    online_class
     $this::get('/online/{id}', 'OnlineClassController@index')->name('online_class');

@@ -8,6 +8,7 @@ use App\MessageReseiver;
 use App\paye;
 use App\Permission;
 use App\Role;
+use App\TeacherPresentDate;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -41,7 +42,7 @@ class RoleController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -62,7 +63,7 @@ class RoleController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -105,4 +106,6 @@ class RoleController extends Controller
 
         return view('Admin.role-user.show', compact('roles', 'users'));
     }
+
+
 }

@@ -90,7 +90,9 @@
             <a href="/teacher/students/rollcall/absentlist/all/{{$id}}">
                 <button class="btn btn-warning">لیست غایبین در طول سال</button>
             </a>
-
+            <a rel="nofollow" href="/teacher/students/rollcall/done/{{$id}}">
+                <button class="btn btn-primary">حضورغیاب انجام شد.</button>
+            </a>
             <div style="text-align: right">
                 <br>
                 <b> لطفا نام و یا نام خانوادگی {{config('global.student')}} را سرچ کنید...</b></div>
@@ -135,12 +137,14 @@
                                 @if(
     isset($user->rollcalltime[0]))
 
-                                    <a href="/teacher/students/rollcall/absenttopresent/{{$user->rollcalltime[0]->id}}">
+                                    <a target="_blank" rel="nofollow"
+                                       href="/teacher/students/rollcall/absenttopresent/{{$user->rollcalltime[0]->id}}">
                                         <span style="color:red">غایب</span>
                                     </a>
 
                                 @else
-                                    <a href="/teacher/students/rollcall/presenttoabsent/{{$user->id}}">
+                                    <a target="_blank" rel="nofollow"
+                                       href="/teacher/students/rollcall/presenttoabsent/{{$user->id}}">
                                         <span style="color: #0d8d2d">حاضر</span>
                                     </a>
 

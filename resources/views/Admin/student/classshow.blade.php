@@ -68,6 +68,7 @@
                         <th>پایه تحصیلی</th>
                         <th>کد ملی</th>
                         <th>ویرایش اطلاعات</th>
+                        <th>تغییر رمز</th>
                         <th>حذف</th>
 
                     </tr>
@@ -122,10 +123,46 @@
                                 </td>
                         </form>
                         <td>
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal{{$user->id}}">
+                                کلیک کنید
+                            </button>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="exampleModal{{$user->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">
+                                                تغیر پسورد
+                                                {{$user->f_name}} {{$user->l_name}}
+                                            </h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="/admin/change_password"  method="post">  @csrf
+                                                <input type="hidden" value="{{$user->id}}" name="user_id">
+                                                <span>رمز جدید</span>
+                                                <br>
+                                                <br>
+                                                <input name="password" class="form-control">
+                                                <br>
+                                                <button class="btn btn-info">ذخیره</button>
+                                            </form>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </td>
+                        <td>
                             <div>
 
                                 <button class="btn btn-danger" onclick="deleteData({{$user->id}})"><i
-                                            class="ti-trash"></i>
+                                        class="ti-trash"></i>
                                 </button>
                             </div>
                         </td>

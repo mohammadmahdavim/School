@@ -48,10 +48,11 @@
                     <div class="col-md-3">
                         <label>دانش آموز</label>
 
-                        <select name="user_id"  class="js-example-basic-single">
+                        <select name="user_id" class="js-example-basic-single">
                             <option></option>
                             @foreach($users as $user)
-                                <option @if($user->id==request()->user_id) selected @endif value="{{$user->id}}">{{$user->f_name}} {{$user->l_name}}</option>
+                                <option @if($user->id==request()->user_id) selected
+                                        @endif value="{{$user->id}}">{{$user->f_name}} {{$user->l_name}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -128,6 +129,13 @@
                                 $i = 1;
                                 ?>
                                 @foreach($details->where('user_id',$user->user_id) as $detail)
+
+                                    <button class="btn btn-danger" onclick="deleteData({{$detail->id}})">
+                                        حذف
+                                        &nbsp;
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                    &nbsp;
                                     {{$i}}. &nbsp;
                                     دبیر:
                                     <span class="btn btn-sm btn-success">
@@ -155,6 +163,15 @@
                                     @endif
                                     <br>
                                     <br>
+                                    توضیحات اولیا:
+                                    <span style="background-color: #f5f8c9">
+
+                                    {{$detail->description}}
+                                    </span>
+                                    <br>
+                                    <br>
+                                    <br>
+
                                     <?php
                                     $i = $i + 1;
                                     ?>
@@ -180,3 +197,44 @@
 
 @endsection('content')
 
+<script>
+    function deleteData(id) {
+        swal({
+            title: "آیا از حذف مطمئن هستید؟",
+            text: "اگر حذف شود تمام دیتای مرتبط با آن حذف می گردد!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        url: "{{  url('/admin/students/rollcall/absenttopresent/')  }}" + '/' + id,
+                        type: "GET",
+
+                        success: function () {
+                            swal({
+                                title: "حذف با موفقیت انجام شد!",
+                                icon: "success",
+
+                            });
+                            window.location.reload(true);
+                        },
+                        error: function () {
+                            swal({
+                                title: "خطا...",
+                                text: data.message,
+                                type: 'error',
+                                timer: '1500'
+                            })
+
+                        }
+                    });
+                } else {
+                    swal("عملیات حذف لغو گردید");
+                }
+            });
+
+    }
+</script>

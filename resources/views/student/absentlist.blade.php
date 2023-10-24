@@ -42,6 +42,7 @@
             display: block;
         }
     </style>
+
 @endsection('css')
 @section('script')
     <script src="/assets/js/jquery.min.js"></script>
@@ -55,6 +56,8 @@
             });
         });
     </script>
+    <script src="/js/sweetalert.min.js"></script>
+    @include('sweet::alert')
 @endsection('script')
 @section('navbar')
 
@@ -84,7 +87,7 @@
         <div class="card-body" style="padding-right: -10px">
             <div style="text-align: right">
                 <br>
-                <b> لطفا نام و یا نام خانوادگی {{config('global.student')}} را سرچ کنید...</b></div>
+                <b>جستجو...</b></div>
             <br>
             <input id="myInput" type="text" placeholder="Search.." class="form-control col-md-4">
             <br>
@@ -98,6 +101,7 @@
                             <th>نام خانوادگی</th>
                             <th>دبیر</th>
                             <th>تاریخ غیبت</th>
+                            <th>توضیحات</th>
 
 
                         </tr>
@@ -108,10 +112,47 @@
                             <tr style="text-align: center">
                                 <td>{{$user->user->f_name}}</td>
                                 <td>{{$user->user->l_name}}</td>
-                                <td>{{\App\User::where('id',$user->author)->pluck('f_name')->first()}}
-                                    {{\App\User::where('id',$user->author)->pluck('l_name')->first()}}
+                                <td>{{$user->teacher->f_name}} {{$user->teacher->l_name}}</td>
+
+                                <td>{{(\Morilog\Jalali\Jalalian::fromCarbon($user->created_at))}}</td>
+                                <td>
+                                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                                            data-target="#exampleModal{{$user->id}}">
+                                        ثبت توضیح غیبت
+                                    </button>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="exampleModal{{$user->id}}" tabindex="-1" role="dialog"
+                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title"
+                                                        id="exampleModalLabel">{{\Morilog\Jalali\Jalalian::fromCarbon($user->created_at)}}</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <form action="/student/absent/description/{{$user->id}}" method="post">
+                                                    @csrf
+
+                                                    <div class="modal-body">
+                                                        <label>توضیحات</label>
+                                                        <input class="form-control" name="description" value="{{$user->description}}">
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                                data-dismiss="modal">بستن
+                                                        </button>
+                                                        <button type="submit" class="btn btn-primary">ذخیره تغییرات
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
-                                <td>{{(\Morilog\Jalali\Jalalian::fromCarbon($user->created_at))->format('%A, %d %B %y')}}</td>
                             </tr>
                         @endforeach
                         </tbody>

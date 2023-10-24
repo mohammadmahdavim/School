@@ -12,7 +12,10 @@ $(document).ready(function () {
     $('input[id="date-picker-shamsi-new"]').datepicker({
         dateFormat: "yy/mm/dd",
         showOtherMonths: true,
-        selectOtherMonths: false
+        selectOtherMonths: false,
+        changeMonth: true,
+        changeYear: true,
+        showButtonPanel: true
     });
 
     $('input[name="date-picker-shamsi-list"]').datepicker({

@@ -111,7 +111,7 @@ class ExamController extends Controller
         $expritime = $expritime + ($texpire[0] * 60 * 60);
         $expritime = $expritime + ($texpire[1] * 60);
         $examexprie = $date + $expritime;
-        if ($examexprie < Jalalian::now()->getTimestamp() or $endtime < 0) {
+        if ($examexprie < Jalalian::now()->getTimestamp() or $endtime < 0 or FinishExam::where('user_id',$iduser)->where('exam_id',$id)->first()) {
             alert()->warning('زمان آزمون به پایان رسیده است', 'توجه');
             return redirect('/student/exam');
         }
@@ -210,8 +210,9 @@ class ExamController extends Controller
         } else {
             $mark = ($correctcount / $countquestions) * 20;
         }
+        $darsid = ExamQuestion::where('id', $request->question_id)->pluck('dars_id')->first();
+
         if ($generalExam == 1) {
-            $darsid = ExamQuestion::where('id', $request->question_id)->pluck('dars_id')->first();
 
             $examMarkDars = ExamMark::where('exam_id', $examid)
                 ->where('dars_id', $darsid)
@@ -249,8 +250,25 @@ class ExamController extends Controller
         }
         $exam = Exam::where('id', $examid)->first();
         if ($exam->mark_status == 1) {
+
+            $countquestions = ExamQuestion::where('exam_id',$examid)->where('dars_id',$darsid)->count();
+            $questions = ExamQuestion::where('exam_id', $examid)->where('dars_id',$darsid)->pluck('id');
+            $answers = ExamAnswer::where('user_id', $iduser)->whereIn('question_id', $questions)->get();
+            $correctcount = 0;
+            foreach ($answers as $answer) {
+                if ($answer->option_id == $answer->correct) {
+                    $correctcount = $correctcount + 1;
+                }
+            }
+            if ($correctcount == 0) {
+                $mark = 0;
+            } else {
+                $mark = ($correctcount / $countquestions) * 20;
+            }
+
+
             $class = User::where('id', $iduser)->pluck('class')->first();
-            $cMark = CMark::where('exam_id', $examid)->where('classid', $class)->first();
+            $cMark = CMark::where('exam_id', $examid)->where('classid', $class)->where('dars',$darsid)->first();
             $row = MarkItem::where('user_id', $iduser)->where('item_id', $cMark->id)->first();
             if ($row == null) {
                 $this->MarkService->createMarkStudent($iduser, $cMark->id, $mark);

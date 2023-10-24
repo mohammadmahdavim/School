@@ -7,6 +7,7 @@ use App\dars;
 use App\Http\Controllers\Controller;
 use App\RollCall;
 use App\teacher;
+use App\TeacherPresentDate;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -35,7 +36,7 @@ class RollCallController extends Controller
     public function presenttoabsent($id)
     {
         $user = User::where('id', $id)->first();
-        \App\lib\Kavenegar::sendSMS($user->mobile,'','');
+        \App\lib\Kavenegar::sendSMS($user->mobile, '', '');
 
         RollCall::create([
             'user_id' => $id,
@@ -73,5 +74,20 @@ class RollCallController extends Controller
         }
         $clasid = $id;
         return view('Teacher.rollcall.absentlist', compact('data', 'clasid'));
+    }
+
+    public function done($id)
+    {
+        $class=clas::where('classnamber',$id)->pluck('id')->first();
+        $check = TeacherPresentDate::where('user_id', auth()->user()->id)->where('class_id', $class)->where('created_at', Carbon::now()->toDateString())->first();
+        if (!$check) {
+            TeacherPresentDate::create([
+                'user_id' => auth()->user()->id,
+                'created_at' => Carbon::now()->toDateString(),
+                'class_id' => $class
+            ]);
+        }
+        alert()->success('اطلاعات ثبت شد', 'موفق');
+        return back();
     }
 }

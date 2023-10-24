@@ -47,11 +47,10 @@
             <table class="table table-bordered table-striped mb-0 table-fixed" id="myTable">
                 <thead>
                 <tr style="text-align: center">
-                    @if($disiplins!='[]')
-                        <th>مورد ثبت شده</th>
-                        <th>نمره کسر شده</th>
-                        <th>تاریخ ثبت</th>
-                    @endif
+                    <th>مورد ثبت شده</th>
+                    <th>نمره کسر شده</th>
+                    <th>تاریخ ثبت</th>
+
                 </tr>
                 </thead>
                 <tbody>
@@ -63,18 +62,16 @@
                         <td>{{$disiplin->created_at->toDateString()}}</td>
                     </tr>
                 @endforeach
-                <tr style="text-align: center">
-                    <td>
-                        نمره انضباط کل
-                    </td>
-                    <td style="background-color: powderblue ;color: black">{{(100-$total)/5}}</td>
-                    <td style="text-align: center"></td>
-                </tr>
-
                 </tbody>
 
             </table>
-
+            <br>
+            <span style="font-size: 16px">
+                نمره انضباط کل:
+                <b>
+                    {{20 - $total}}
+                </b>
+            </span>
         </div>
 
     </div>

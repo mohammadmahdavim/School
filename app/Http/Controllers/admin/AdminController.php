@@ -21,6 +21,7 @@ use App\OnlineClass;
 use App\PreRegistration;
 use App\RollCall;
 use App\Setting;
+use App\TeacherPresentDate;
 use App\User;
 use Carbon\Carbon;
 use Excel;
@@ -28,6 +29,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use JoisarJignesh\Bigbluebutton\Facades\Bigbluebutton;
@@ -567,7 +569,7 @@ class AdminController extends Controller
         $classR = clas::all();
         $users = user::where('role', 'دانش آموز')->get();
 
-        return view('Admin.rollcall.data', compact('data', 'classR','details','users'));
+        return view('Admin.rollcall.data', compact('data', 'classR', 'details', 'users'));
 
     }
 
@@ -588,5 +590,35 @@ class AdminController extends Controller
 
         $classR = clas::all();
         return view('Admin.discipline.data', compact('data', 'classR'));
+    }
+
+    public function change_password(Request $request)
+    {
+
+        $user = User::where('id', $request->user_id)->first();
+        $user->update([
+            'password' => Hash::make($request->password)
+        ]);
+        alert()->success('موفق', 'ویرایش شما با موفقیت ثبت گردید!');
+        return back();
+    }
+
+    public function present_list(Request $request)
+    {
+        $rows = TeacherPresentDate::orderBy('created_at', 'desc')
+            ->when($request->get('class'), function ($query) use ($request) {
+                $query->where('class_id', $request->class);
+            })
+
+            ->when($request->get('date_from'), function ($query) use ($request) {
+                $query->where('created_at', '>=', \Morilog\Jalali\Jalalian::fromFormat('Y/m/d', $request->date_from)->toCarbon());
+            })
+            ->when($request->get('date_to'), function ($query) use ($request) {
+                $query->where('created_at', '<=',\Morilog\Jalali\Jalalian::fromFormat('Y/m/d', $request->date_to)->toCarbon());
+            })
+          ->with('class')
+          ->paginate(30);
+        $allclass=clas::all();
+        return view('admin.presentlist', compact('rows','allclass'));
     }
 }

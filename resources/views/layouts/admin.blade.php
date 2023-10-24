@@ -374,7 +374,8 @@
                                     <li><a href="#"><i class="icon-user-tie"></i> حضور غیاب
                                         </a>
                                         <ul>
-
+                                            <li><a href="/admin/present_list">خوداظهاری حضورغیاب</a>
+                                            </li>
                                             <li><a href="/admin/dars.create">مشاهده موارد</a>
                                                 <ul>
                                                     <a href="/admin/roolcall_report">همه موارد</a>
@@ -853,6 +854,29 @@
                     </ul>
                 </li>
             @endcan
+            <li>
+                <a href="#">
+                    <i class="fa fa-pencil">
+
+                    </i>
+                    &nbsp;
+                    نمره دهی
+                </a>
+                <ul>
+                    @foreach($data as $cls)
+                        <a href="/admin/mark/{{$cls->class[0]->classnamber}}/{{$cls->darss[0]->id}}">
+                            <li>
+                                {{$cls->class[0]->classnamber}}
+                                {{$cls->class[0]->description}}
+                                - {{$cls->darss[0]->name}}
+                            </li>
+                        </a>
+                    @endforeach
+
+
+                </ul>
+
+            </li>
             @can('online')
 
                 <li>
