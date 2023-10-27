@@ -13,6 +13,7 @@
 
 use Illuminate\Support\Facades\Artisan;
 
+
 Route::get('/config-cache', function () {
     $exitCode = Artisan::call('config:cache');
     return 'Config cache cleared';
