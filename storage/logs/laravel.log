@@ -1806,3 +1806,35 @@
 #14 D:\\laragon\\www\\myschools\\myschool\\server.php(21): require_once('D:\\\\laragon\\\\www\\\\...')
 #15 {main}
 "} 
+[2023-10-28 07:08:45] laravel.EMERGENCY: Unable to create configured logger. Using emergency logger. {"exception":"[object] (InvalidArgumentException(code: 0): Log [] is not defined. at E:\\laragon\\www\\myschool\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php:168)
+[stacktrace]
+#0 E:\\laragon\\www\\myschool\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php(102): Illuminate\\Log\\LogManager->resolve(NULL)
+#1 E:\\laragon\\www\\myschool\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php(90): Illuminate\\Log\\LogManager->get(NULL)
+#2 E:\\laragon\\www\\myschool\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php(498): Illuminate\\Log\\LogManager->driver()
+#3 E:\\laragon\\www\\myschool\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(114): Illuminate\\Log\\LogManager->error('Call to a membe...', Array)
+#4 E:\\laragon\\www\\myschool\\app\\Exceptions\\Handler.php(37): Illuminate\\Foundation\\Exceptions\\Handler->report(Object(Symfony\\Component\\Debug\\Exception\\FatalThrowableError))
+#5 E:\\laragon\\www\\myschool\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(314): App\\Exceptions\\Handler->report(Object(Symfony\\Component\\Debug\\Exception\\FatalThrowableError))
+#6 E:\\laragon\\www\\myschool\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(122): Illuminate\\Foundation\\Http\\Kernel->reportException(Object(Symfony\\Component\\Debug\\Exception\\FatalThrowableError))
+#7 E:\\laragon\\www\\myschool\\public\\index.php(55): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
+#8 E:\\laragon\\www\\myschool\\server.php(21): require_once('E:\\\\laragon\\\\www\\\\...')
+#9 {main}
+"} 
+[2023-10-28 07:08:45] laravel.ERROR: Call to a member function connection() on null {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalThrowableError(code: 0): Call to a member function connection() on null at E:\\laragon\\www\\myschool\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Model.php:1239)
+[stacktrace]
+#0 E:\\laragon\\www\\myschool\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Model.php(1205): Illuminate\\Database\\Eloquent\\Model::resolveConnection(NULL)
+#1 E:\\laragon\\www\\myschool\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Model.php(1035): Illuminate\\Database\\Eloquent\\Model->getConnection()
+#2 E:\\laragon\\www\\myschool\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Model.php(952): Illuminate\\Database\\Eloquent\\Model->newBaseQueryBuilder()
+#3 E:\\laragon\\www\\myschool\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Model.php(988): Illuminate\\Database\\Eloquent\\Model->newModelQuery()
+#4 E:\\laragon\\www\\myschool\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Model.php(941): Illuminate\\Database\\Eloquent\\Model->newQueryWithoutScopes()
+#5 E:\\laragon\\www\\myschool\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Model.php(460): Illuminate\\Database\\Eloquent\\Model->newQuery()
+#6 E:\\laragon\\www\\myschool\\config\\global.php(2): Illuminate\\Database\\Eloquent\\Model::all()
+#7 E:\\laragon\\www\\myschool\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\LoadConfiguration.php(72): require('E:\\\\laragon\\\\www\\\\...')
+#8 E:\\laragon\\www\\myschool\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\LoadConfiguration.php(39): Illuminate\\Foundation\\Bootstrap\\LoadConfiguration->loadConfigurationFiles(Object(Illuminate\\Foundation\\Application), Object(Illuminate\\Config\\Repository))
+#9 E:\\laragon\\www\\myschool\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(211): Illuminate\\Foundation\\Bootstrap\\LoadConfiguration->bootstrap(Object(Illuminate\\Foundation\\Application))
+#10 E:\\laragon\\www\\myschool\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(162): Illuminate\\Foundation\\Application->bootstrapWith(Array)
+#11 E:\\laragon\\www\\myschool\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(146): Illuminate\\Foundation\\Http\\Kernel->bootstrap()
+#12 E:\\laragon\\www\\myschool\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(116): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))
+#13 E:\\laragon\\www\\myschool\\public\\index.php(55): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
+#14 E:\\laragon\\www\\myschool\\server.php(21): require_once('E:\\\\laragon\\\\www\\\\...')
+#15 {main}
+"} 

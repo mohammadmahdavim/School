@@ -35,8 +35,19 @@ class StudentsController extends Controller
 
     public function index()
     {
-        $modal = FirstMessage::where('receiver', 'دانش آموز')->where('modal', 1)->first();
-        $messages = FirstMessage::where('receiver', 'دانش آموز')->where('modal', 0)->get();
+        if (auth()->user()->role == 'اولیا') {
+            $class = auth()->user()->class . '_p';
+            $modal = FirstMessage::whereIn('receiver', ['اولیا', $class])->where('modal', 1)->orderBy('created_at','desc')->first();
+            $messages = FirstMessage::whereIn('receiver', ['اولیا', $class])
+                ->where('modal', 0)->get();
+        } else {
+            $class = auth()->user()->class . '_s';
+            $modal = FirstMessage::whereIn('receiver', ['دانش آموز', $class])->where('modal', 1)->orderBy('created_at','desc')->first();
+            $messages = FirstMessage::whereIn('receiver', ['دانش آموز', $class])
+                ->where('modal', 0)->get();
+        }
+
+
         $class = User::where('id', auth()->user()->id)->pluck('class')->first();
 
         $days = TagvimS::where('class_id', $class)->with('dars')->with('times')->with('days')->orderBy('day')->get();
@@ -414,11 +425,11 @@ class StudentsController extends Controller
         return view('student.absentlist', compact('data'));
     }
 
-    public function rollcall_description(Request $request,$id)
+    public function rollcall_description(Request $request, $id)
     {
-        $row=RollCall::where('id',$id)->first();
+        $row = RollCall::where('id', $id)->first();
         $row->update([
-            'description'=>$request->description
+            'description' => $request->description
         ]);
         alert()->success('اطلاعات ثبت شد.');
         return back();

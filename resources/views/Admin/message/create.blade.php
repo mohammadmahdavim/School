@@ -42,6 +42,12 @@
                         <div class="form-group">
                             <h6><label>مخاطب</label></h6>
                             <select class="js-example-basic-single" name="receiver[]" multiple>
+                                @foreach($claass as $claas)
+                                    <option value="{{$claas->classnamber}}_s">دانش آموزان کلاس {{$claas->classnamber}}</option>
+                                @endforeach
+                                @foreach($claass as $claas)
+                                    <option value="{{$claas->classnamber}}_p">اولیای کلاس {{$claas->classnamber}}</option>
+                                @endforeach
                                 <option>دانش آموز</option>
                                 <option>دبیر</option>
                                 <option>اولیا</option>

@@ -72,7 +72,10 @@
                             <option value="parent">همه ی {{config('global.parents')}}</option>
                             <option value="student">همه ی {{config('global.students')}}</option>
                             @foreach($claass as $claas)
-                                <option value="{{$claas}}">کلاس{{$claas}}</option>
+                                <option value="{{$claas}}_s">دانش آموزان کلاس {{$claas}}</option>
+                            @endforeach
+                            @foreach($claass as $claas)
+                                <option value="{{$claas}}_p">اولیای کلاس {{$claas}}</option>
                             @endforeach
                             @foreach($allusers as $user)
                                 <option value="{{$user->codemeli}}">{{$user->l_name}} - {{$user->f_name}}

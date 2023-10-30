@@ -75,7 +75,7 @@ class RoydadController extends Controller
                 $cover = $patchfile;
                 $filename = time() . '.' . '.png';
                 $path = public_path('/images/' . $filename);
-                Image::make($cover->getRealPath())->resize(800, 550)->save($path);
+                Image::make($cover->getRealPath())->save($path);
                 $extension = $cover->getClientOriginalExtension();
                 $mime = $cover->getClientMimeType();
                 $original_filename = $cover->getClientOriginalName();
@@ -221,7 +221,7 @@ class RoydadController extends Controller
                 $cover = $patchfile;
                 $filename = time() . '.' . '.png';
                 $path = public_path('/images/' . $filename);
-                Image::make($cover->getRealPath())->resize(800, 550)->save($path);
+                Image::make($cover->getRealPath())->save($path);
                 $extension = $cover->getClientOriginalExtension();
                 $mime = $cover->getClientMimeType();
                 $original_filename = $cover->getClientOriginalName();

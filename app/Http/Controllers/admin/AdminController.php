@@ -59,8 +59,12 @@ class AdminController extends Controller
         if ($user == 'دانش آموز' or $user == 'اولیا') {
             return back();
         }
-        $modal = FirstMessage::where('receiver', 'بقیه اعضا')->where('modal', 1)->first();
-        $messages = FirstMessage::where('receiver', 'بقیه اعضا')->where('modal', 0)->get();
+        $modal = FirstMessage::where('receiver', 'بقیه اعضا')
+            ->where('modal', 1)
+            ->first();
+        $messages = FirstMessage::where('receiver', 'بقیه اعضا')
+            ->where('modal', 0)
+            ->get();
         $day = Jalalian::now()->getDay();
         if ($day < 10) {
             $day = '0' . $day;
@@ -405,7 +409,7 @@ class AdminController extends Controller
 
     public function karnamehshow($name, $class)
     {
-        $students = User::where('class', $class)->
+        $students = User::where('class', $class)->where('role','دانش آموز')->
         with(['karnameadmin' => function ($query) use ($name) {
             $query->where('name', $name);
         }])->get();

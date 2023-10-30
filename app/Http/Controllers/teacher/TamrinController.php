@@ -144,7 +144,7 @@ class TamrinController extends Controller
         if (auth()->user()->role == 'معلم') {
             $tamrinids = Tamrin::where('dars', $id)->where('class_id', $idc)->pluck('id');
             $idt = auth()->user()->id;
-            $jtamrins = JTamrin::wherein('tamrin_id', $tamrinids)->where('teacher_id', $idt)->orderBy('created_at')
+            $jtamrins = JTamrin::wherein('tamrin_id', $tamrinids)->where('teacher_id', $idt)->orderBy('created_at','desc')
                 ->paginate(20);
 
 

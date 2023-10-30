@@ -1,66 +1,39 @@
 @extends('layouts.teacher')
 @section('css')
-    <link rel="stylesheet" type="text/css" href="/assets/excel/css/component.css"/>
-    <style>
-        .fab {
-            width: 40px;
-            height: 40px;
-            background-color: gold;
-            border-radius: 50%;
-            box-shadow: 0 6px 10px 0 #666;
-            transition: all 0.1s ease-in-out;
+    <!-- begin::datepicker -->
+    <link rel="stylesheet" href="/assets/vendors/datepicker-jalali/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="/assets/vendors/datepicker/daterangepicker.css">
+    <!-- end::datepicker -->
 
-            font-size: 20px;
-            color: white;
-            text-align: center;
-            line-height: 40px;
+    <!-- begin::select2 -->
+    <link rel="stylesheet" href="/assets/vendors/select2/css/select2.min.css" type="text/css">
+    <!-- end::select2 -->
+    <link rel="stylesheet" href="/assets/vendors/clockpicker/bootstrap-clockpicker.min.css" type="text/css">
 
-            position: fixed;
-            right: 2%;
-            bottom: 18%;
-        }
-
-        .fab:hover {
-            box-shadow: 0 6px 14px 0 #666;
-            transform: scale(1.15);
-        }
-
-        @media screen and (max-width: 1000px) {
-            .fab {
-                display: none;
-            }
-        }
-    </style>
-    <style>
-        .my-custom-scrollbar {
-            position: relative;
-            height: 700px;
-            overflow: auto;
-        }
-
-        .table-wrapper-scroll-y {
-            display: block;
-        }
-    </style>
 @endsection('css')
 @section('script')
-    <script src="/assets/js/jquery.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $("#myInput").on("keyup", function () {
-                var value = $(this).val().toLowerCase();
-                $("#myTable tr").filter(function () {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                });
-            });
-        });
-    </script>
+    <script src="/assets/vendors/clockpicker/bootstrap-clockpicker.min.js"></script>
+    <script src="/assets/js/examples/clockpicker.js"></script>
+    <script type="text/javascript" src="/assets/js/bootstrap_multiselect.js"></script>
 
-    <script src="/js/sweetalert.min.js"></script>
+    <script type="text/javascript" src="/assets/js/form_multiselect.js"></script>
 
-    <script src="/assets/excel/ry.stickyheader.js/jquejs"></script>
-    @include('sweet::alert')
-    <!-- begin::sweet alert demo -->
+
+    <!-- begin::CKEditor -->
+    <script src="/assets/vendors/ckeditor/ckeditor.js"></script>
+    <script src="/assets/js/examples/ckeditor.js"></script>
+    <!-- end::CKEditor -->
+
+    <!-- begin::datepicker -->
+    <script src="/assets/vendors/datepicker-jalali/bootstrap-datepicker.min.js"></script>
+    <script src="/assets/vendors/datepicker-jalali/bootstrap-datepicker.fa.min.js"></script>
+    <script src="/assets/vendors/datepicker/daterangepicker.js"></script>
+    <script src="/assets/js/examples/datepicker.js"></script>
+    <!-- end::datepicker -->
+    <!-- begin::select2 -->
+    <script src="/assets/vendors/select2/js/select2.min.js"></script>
+    <script src="/assets/js/examples/select2.js"></script>
+    <!-- end::select2 -->
 @endsection('script')
 @section('navbar')
 
@@ -100,7 +73,7 @@
             <input id="myInput" type="text" placeholder="Search.." class="form-control col-md-4">
             <br>
             <div class="table-responsive">
-                <table class="overflow-y" id="myTable">
+                <table class="table table-bordered table-striped mb-0 table-fixed" id="myTable">
                     <thead>
                     <tr style="text-align: center">
                         <th>عکس</th>
@@ -108,11 +81,11 @@
                         <th>نام خانوادگی</th>
                         <th>وضعیت</th>
                         <th>لیست حضور غیاب سالانه</th>
+                        <th>ثبت غیبت در روز دیگر</th>
 
 
                     </tr>
                     </thead>
-                    <tbody id="myTable">
                     @include('Admin.errors')
                     @foreach($data as $user )
                         <tr style="text-align: center">
@@ -160,19 +133,78 @@
                                     بدون غیبت
                                 @endif
                             </td>
+                            <td>
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-primary" data-toggle="modal"
+                                        data-target="#exampleModal{{$user->id}}">
+                                    ثبت
+                                </button>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="exampleModal{{$user->id}}" tabindex="-1" role="dialog"
+                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">انتخاب تاریخ و
+                                                    ساعت</h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <form action="/teacher/absent/store/{{$user->id}}" method="post">
+                                                @csrf
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <label> تاریخ</label>
+                                                            <input style="text-align: center" type="text"
+                                                                   name="date-picker-shamsi-list"
+                                                                   class="form-control text-right"
+                                                                   readonly='true'
+                                                                   dir="ltr" value="{{old('date1')}}" required
+                                                                   autocomplete="off">
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label> ساعت</label>
+                                                            <div class="input-group clockpicker-autoclose-demo">
+                                                                <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <i class="fa fa-clock-o"></i>
+                            </span>
+                                                                </div>
+                                                                <input style="text-align: center" name="time"
+                                                                       type="text" class="form-control" required
+                                                                       readonly='true'
+                                                                       value="00:00">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">بستن
+                                                    </button>
+                                                    <button type="submit" class="btn btn-primary">ثبت و ذخیره
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
 
                         </tr>
 
-                    @endforeach
+                        @endforeach
 
-                    </tbody>
+                        </tbody>
 
                 </table>
+
             </div>
         </div>
     </div>
-
-
-
 
 @endsection('content')

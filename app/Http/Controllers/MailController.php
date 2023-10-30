@@ -36,7 +36,7 @@ class MailController extends Controller
         } else {
             $layout = 'student';
         }
-        return view('mail.index', ['mails' => $mails, 'count' => $count, 'role','layout'=>$layout]);
+        return view('mail.index', ['mails' => $mails, 'count' => $count, 'role', 'layout' => $layout]);
     }
 
 
@@ -53,7 +53,7 @@ class MailController extends Controller
         $id = auth()->user()->id;
         $mails = DB::table('message_reseivers')->where('author', $id)->orderBy('created_at', 'desc')->distinct('mail_id')->get();
         $count = MessageReseiver::where('status', 0)->where('user_id', $id)->count();
-        return view('mail.send', ['mails' => $mails, 'count' => $count,'layout'=>$layout]);
+        return view('mail.send', ['mails' => $mails, 'count' => $count, 'layout' => $layout]);
     }
 
     /**
@@ -84,9 +84,9 @@ class MailController extends Controller
         $count = MessageReseiver::where('user_id', $user_id)->where('status', 0)->count();
         if ($user->role == 'اولیا' or $user->role == 'دانش آموز') {
 
-            return view('mail.creates', compact('allusers', 'count','layout'));
+            return view('mail.creates', compact('allusers', 'count', 'layout'));
         } else {
-            return view('mail.create', compact('allusers', 'count', 'claass','layout'));
+            return view('mail.create', compact('allusers', 'count', 'claass', 'layout'));
         }
     }
 
@@ -139,9 +139,15 @@ class MailController extends Controller
 
             $claass = DB::table('users')->where('role', 'دانش آموز')->distinct('class')->pluck('class');
             foreach ($claass as $claas) {
-                if ($claas == $reseiver) {
-                    $usres = User::where('class', $claas)->pluck('id');
+                $ex = explode('_', $reseiver);
+                if ($claas == $ex[0]) {
+                    if ($ex[1] == 's') {
+                        $usres = User::where('class', $claas)->where('role','دانش آموز')->pluck('id');
 
+                    } elseif ($ex[1] == 'p') {
+                        $usres = User::where('class', $claas)->where('role','اولیا')->pluck('id');
+
+                    }
                     foreach ($usres as $user) {
                         MessageReseiver::create([
                             'mail_id' => $mail_id,
@@ -253,7 +259,7 @@ class MailController extends Controller
             ]);
         }
 
-        return view('mail.show', ['count' => $count, 'mail' => $mail,'layout'=>$layout]);
+        return view('mail.show', ['count' => $count, 'mail' => $mail, 'layout' => $layout]);
 
 
     }
@@ -279,7 +285,7 @@ class MailController extends Controller
             ]);
         }
 
-        return view('mail.showin', ['count' => $count, 'mail' => $mail,'layout'=>$layout]);
+        return view('mail.showin', ['count' => $count, 'mail' => $mail, 'layout' => $layout]);
 
 
     }
@@ -306,9 +312,9 @@ class MailController extends Controller
         $user = User::where('id', $user_id)->first();
         $count = MessageReseiver::where('user_id', $user_id)->where('status', 0)->count();
         if ($user->role == 'اولیا' or $user->role == 'دانش آموز') {
-            return view('mail.edites', compact('allusers', 'count', 'mail','layout'));
+            return view('mail.edites', compact('allusers', 'count', 'mail', 'layout'));
         } else {
-            return view('mail.edite', compact('allusers', 'count', 'mail','layout'));
+            return view('mail.edite', compact('allusers', 'count', 'mail', 'layout'));
         }
 
     }
@@ -526,13 +532,17 @@ class MailController extends Controller
 
     public function deletemail($id)
     {
-        $mailid = MessageReseiver::where('id', $id)->first()['mail_id'];
-        $mailres = MessageReseiver::where('mail_id', $mailid)->get();
-        foreach ($mailres as $M)
-            if (!empty($M)) {
-                $M->delete();
-            }
-        $mail = MailModel::where('id', $mailid)->first();
+//        $mailid = MessageReseiver::where('id', $id)->first()['mail_id'];
+//        $mailres = MessageReseiver::where('mail_id', $mailid)->get();
+//        foreach ($mailres as $M)
+//            if (!empty($M)) {
+//                $M->delete();
+//            }
+//        $mail = MailModel::where('id', $mailid)->first();
+//        $mail->delete();
+
+
+        $mail = MessageReseiver::where('id', $id)->first();
         $mail->delete();
         alert()->success('پیام شما با موفقیت حذف شد', 'حذف پیام')->autoclose(2000)->persistent('ok');
         return back();

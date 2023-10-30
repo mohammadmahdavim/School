@@ -10,6 +10,7 @@ use App\teacher;
 use App\TeacherPresentDate;
 use App\User;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Morilog\Jalali\Jalalian;
 
@@ -78,7 +79,7 @@ class RollCallController extends Controller
 
     public function done($id)
     {
-        $class=clas::where('classnamber',$id)->pluck('id')->first();
+        $class = clas::where('classnamber', $id)->pluck('id')->first();
         $check = TeacherPresentDate::where('user_id', auth()->user()->id)->where('class_id', $class)->where('created_at', Carbon::now()->toDateString())->first();
         if (!$check) {
             TeacherPresentDate::create([
@@ -88,6 +89,30 @@ class RollCallController extends Controller
             ]);
         }
         alert()->success('اطلاعات ثبت شد', 'موفق');
+        return back();
+    }
+
+    public function absent_store(Request $request, $id)
+    {
+        $date = explode('/', $request->input('date-picker-shamsi-list'));
+        $time = explode(':', $request->time);
+        $date = (new Jalalian($date[0], $date[1], $date[2], $time[0], $time[1], 0))->toCarbon();
+        $this->validate(request(), [
+                'date-picker-shamsi-list' => 'required',
+                'time' => 'required',
+            ]
+        );
+        $user = User::where('id', $id)->first();
+        \App\lib\Kavenegar::sendSMS($user->mobile, '', '');
+        RollCall::create([
+            'user_id' => $id,
+            'author' => auth()->user()->id,
+            'class_id' => User::where('id', $id)->pluck('class')->first(),
+            'updated_at' => str_replace('/', '-', $request->input('date-picker-shamsi-list')),
+            'created_at' => $date,
+        ]);
+        alert()->success('وضعیت دانش آموز به غایب تغییر پیدا کرد', 'موفق');
+
         return back();
     }
 }

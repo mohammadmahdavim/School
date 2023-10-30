@@ -803,6 +803,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['ExpireCheck', 'StatusCheck'
 
 Route::group(['prefix' => 'teacher', 'middleware' => ['TecherCheck', 'ExpireCheck', 'StatusCheck'], 'namespace' => 'teacher'], function () {
 
+    $this::post('/absent/store/{id}', 'RollCallController@absent_store')->name('online_class');
+
     $this::get('/students/rollcall/done/{id}', 'RollCallController@done')->name('online_class');
 
     //    online_class

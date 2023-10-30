@@ -48,7 +48,7 @@
                     <input id="myInput" type="text" placeholder="جستجو..." class="form-control">
                 </div>
                 <br>
-                <table id="example1" class="table table-striped table-bordered">
+                <table id="" class="table table-striped table-bordered">
                     <thead>
                     <tr style="text-align: center">
                         <th>درس</th>

@@ -98,6 +98,7 @@ class JTamrinController extends Controller
      */
     public function inbox()
     {
+
         $id = auth()->user()->id;
         if (auth()->user()->role == 'اولیا') {
             $id = auth()->user()->id - 1000;

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\clas;
 use App\FirstMessage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -11,15 +12,15 @@ class FirstMessageController extends Controller
     public function index()
     {
         $rows = FirstMessage::all();
-
         return view('Admin.message.index', compact('rows'));
 
     }
 
     public function create()
     {
+        $claass = clas::all();
 
-        return view('Admin.message.create');
+        return view('Admin.message.create',compact('claass'));
     }
 
     public function store(Request $request)

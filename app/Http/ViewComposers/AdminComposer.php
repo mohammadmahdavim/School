@@ -34,8 +34,10 @@ class AdminComposer
         $newkarname=KarnamehAdmin::all();
         $newkarname=$newkarname->unique('name');
         $setting=Setting::all()->first();
-        $data = teacher::with('darss')->orderBy('class_id')->get();
-
+        $data = teacher::with('darss')
+            ->has('class')
+            ->has('darss')
+            ->orderBy('class_id')->get();
 
         $view->with(
             [

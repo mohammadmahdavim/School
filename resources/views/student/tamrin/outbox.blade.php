@@ -42,7 +42,7 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-            <table id="example1" class="table table-striped table-bordered">
+            <table id="" class="table table-striped table-bordered">
                 <thead>
                 <tr class="success" style="text-align: center">
                     <th>درس</th>

@@ -101,6 +101,7 @@
                         <label>فرصت تحویل تا تاریخ ... </label>
                         <input style="text-align: center" type="text" name="date1" id="date-picker-shamsi"
                                class="form-control text-right"
+                               readonly='true'
                                dir="ltr" value="{{old('date1')}}" required autocomplete="off">
                         <label>فرصت تحویل تا ساعت ... </label>
                         <div class="m-b-40">
