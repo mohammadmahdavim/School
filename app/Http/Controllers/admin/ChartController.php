@@ -34,7 +34,7 @@ class ChartController extends Controller
                 ->pluck('avg');
 
             if (count($mark) > 0) {
-                $marks[] = ($mark[0])*5;
+                $marks[] = ($mark[0]) * 5;
             } else {
                 $marks[] = 0;
             }
@@ -77,7 +77,7 @@ class ChartController extends Controller
                 ->pluck('avg');
 
             if (count($mark) > 0) {
-                $marks[] = ($mark[0])*5;
+                $marks[] = ($mark[0]) * 5;
             } else {
                 $marks[] = 0;
             }
@@ -126,7 +126,7 @@ class ChartController extends Controller
                 ->pluck('avg');
 
             if (count($mark) > 0) {
-                $marks[] = ($mark[0])*5;
+                $marks[] = ($mark[0]) * 5;
             } else {
                 $marks[] = 0;
             }
@@ -165,50 +165,24 @@ class ChartController extends Controller
             ->groupBy('user_id')
             ->orderBy('count', 'desc')
             ->get();
-        $films = DB::table('films')
-            ->select(DB::raw('count(id) as count,  user_id'))
-            ->groupBy('user_id')
-            ->orderBy('count', 'desc')
-            ->get();
+//        $films = DB::table('films')
+//            ->select(DB::raw('count(id) as count,  user_id'))
+//            ->groupBy('user_id')
+//            ->orderBy('count', 'desc')
+//            ->get();
 
         $users = [];
         $countactivity = [];
-        if (count($tamrins) > 0 && count($films) > 0) {
-            foreach ($tamrins as $tamrin) {
-                $film = $films->where('user_id', $tamrin->user_id)->pluck('count');
-                if (count($film) > 0) {
-                    $counts = $tamrin->count + $film[0];
-                    $users[] = User::where('id', $tamrin->user_id)->pluck('L_name')->first();
-                    $countactivity[] = $counts;
-                } else {
-                    $counts = $tamrin->count;
-                    $users[] = User::where('id', $tamrin->user_id)->pluck('L_name')->first();
-                    $countactivity[] = $counts;
-                }
-
-            }
-            foreach ($films as $film) {
-                $tamrin = $tamrins->where('user_id', $film->user_id)->pluck('user_id');
-//                return $films;
-                if (count($tamrin) == 0) {
-                    $counts = $film->count;
-                    $users[] = User::where('id', $film->user_id)->pluck('L_name')->first();
-                    $countactivity[] = $counts;
-                }
-            }
-        } elseif (count($tamrins) > 0 && count($films) == 0) {
-
+        if (count($tamrins) > 0) {
             foreach ($tamrins as $tamrin) {
                 $counts = $tamrin->count;
-                $users[] = User::where('id', $tamrin->user_id)->pluck('L_name')->first();
-                $countactivity[] = $counts;
-            }
+                $user = User::where('id', $tamrin->user_id)->pluck('L_name')->first();
+                if ($user) {
+                    $users[] = $user;
+                    $countactivity[] = $counts;
+                }
 
-        } elseif (count($tamrins) == 0 && count($films) > 0) {
-            foreach ($films as $film) {
-                $counts = $film->count;
-                $users[] = User::where('id', $film->user_id)->pluck('L_name')->first();
-                $countactivity[] = $counts;
+
             }
         }
         $chartt = Charts::create('bar', 'fusioncharts')
@@ -250,7 +224,7 @@ class ChartController extends Controller
                 }
 
             }
-            $a[] = ($ma / $id)*5;
+            $a[] = ($ma / $id) * 5;
         }
 
         $chartt = Charts::create('bar', 'fusioncharts')
@@ -299,7 +273,7 @@ class ChartController extends Controller
                 }
 
             }
-            $a[] = ($ma / $id)*5;
+            $a[] = ($ma / $id) * 5;
         }
 
         $chartt = Charts::create('bar', 'fusioncharts')
@@ -360,7 +334,7 @@ class ChartController extends Controller
 
         $markss = DB::table('c_marks')->where('classid', $id)->orderBy('dars')->get();
         $classs = $markss->unique('dars')->pluck('dars');
-        $student=User::where('class',$id)->where('role','دانش آموز')->pluck('id');
+        $student = User::where('class', $id)->where('role', 'دانش آموز')->pluck('id');
         $marks = DB::table('mark_items')->orderBy('coddars')->wherein('user_id', $student)
             ->select(DB::raw('avg(mark) as avg,  coddars'))
             ->groupBy('coddars')
@@ -376,7 +350,7 @@ class ChartController extends Controller
             ->dimensions(1000, 600)
             ->responsive(false);
 
-        return view('Admin.charts.classdars', compact('chartt',  'id'));
+        return view('Admin.charts.classdars', compact('chartt', 'id'));
     }
 
 

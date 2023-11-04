@@ -184,12 +184,12 @@
                                         >
                                     @else
                                             <select name="mark[{{$user->id}}]">
+                                                <option value="" selected></option>
 
-                                                <option @if($user->markitems[0]->mark==4) selected @endif value="4">خیلی خوب</option>
-                                                <option @if($user->markitems[0]->mark==3) selected @endif value="3">خوب</option>
-                                                <option @if($user->markitems[0]->mark==2) selected @endif value="2">قابل قبول</option>
-                                                <option @if($user->markitems[0]->mark==1) selected @endif value="1">نیاز به تلاش مجدد</option>
-                                                <option value=""></option>
+                                                <option @if($user->markitems!='[]') @if($user->markitems[0]->mark==4) selected @endif @endif value="4">خیلی خوب</option>
+                                                <option @if($user->markitems!='[]') @if($user->markitems[0]->mark==3) selected @endif @endif value="3">خوب</option>
+                                                <option @if($user->markitems!='[]') @if($user->markitems[0]->mark==2) selected @endif @endif value="2">قابل قبول</option>
+                                                <option @if($user->markitems!='[]') @if($user->markitems[0]->mark==1) selected @endif @endif value="1">نیاز به تلاش مجدد</option>
                                             </select>
 
 

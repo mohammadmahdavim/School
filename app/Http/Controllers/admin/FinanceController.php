@@ -90,6 +90,12 @@ class FinanceController extends Controller
     {
         $cheques = LogFinanace::whereIn('type', ['cheque', 'cache'])
             ->with('user')
+            ->wherehas('user', function ($query) use ($request) {
+                if ($request->class) {
+                    $query->where('class', $request->class);
+
+                }
+            })
             ->when($request->get('user_id'), function ($query) use ($request) {
                 $query->where('user_id', $request->user_id);
             })
@@ -110,6 +116,12 @@ class FinanceController extends Controller
 
         $sum = LogFinanace::whereIn('type', ['cheque', 'cache'])
             ->with('user')
+            ->wherehas('user', function ($query) use ($request) {
+                if ($request->class) {
+                    $query->where('class', $request->class);
+
+                }
+            })
             ->when($request->get('user_id'), function ($query) use ($request) {
                 $query->where('user_id', $request->user_id);
             })
@@ -126,7 +138,7 @@ class FinanceController extends Controller
                 $query->where('cheque_date', '<=', $request->input('date-picker-shamsi-list-1'));
             })->sum('price');
         $students = User::where('role', 'دانش آموز')->has('finance')->get();
-        return view('Admin.finance.cheque', ['cheques' => $cheques, 'students' => $students,'sum' => $sum]);
+        return view('Admin.finance.cheque', ['cheques' => $cheques, 'students' => $students, 'sum' => $sum]);
     }
 
     public function cheque_cash(Request $request)

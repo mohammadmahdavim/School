@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\MailAnswer;
 use App\MailModel;
 use App\MessageReseiver;
 use App\User;
@@ -142,10 +143,10 @@ class MailController extends Controller
                 $ex = explode('_', $reseiver);
                 if ($claas == $ex[0]) {
                     if ($ex[1] == 's') {
-                        $usres = User::where('class', $claas)->where('role','دانش آموز')->pluck('id');
+                        $usres = User::where('class', $claas)->where('role', 'دانش آموز')->pluck('id');
 
                     } elseif ($ex[1] == 'p') {
-                        $usres = User::where('class', $claas)->where('role','اولیا')->pluck('id');
+                        $usres = User::where('class', $claas)->where('role', 'اولیا')->pluck('id');
 
                     }
                     foreach ($usres as $user) {
@@ -250,8 +251,9 @@ class MailController extends Controller
         }
         $ids = auth()->user()->id;
         $count = MessageReseiver::where('user_id', $ids)->where('status', 0)->count();
-        $mail = MailModel::find($id);
-        $mail->update(['status' => 1]);
+        $mail = MailModel::where('id', $id)
+            ->with('answers')
+            ->first();        $mail->update(['status' => 1]);
         $mailShow = MessageReseiver::where('user_id', $ids)->where('mail_id', $id)->first();
         if ($mailShow) {
             $mailShow->update([
@@ -276,7 +278,9 @@ class MailController extends Controller
         }
         $ids = auth()->user()->id;
         $count = MessageReseiver::where('user_id', $ids)->where('status', 0)->count();
-        $mail = MailModel::find($id);
+        $mail = MailModel::where('id', $id)
+            ->with('answers')
+            ->first();
         $mail->update(['status' => 1]);
         $mailShow = MessageReseiver::where('user_id', $ids)->where('mail_id', $id)->first();
         if ($mailShow) {
@@ -642,6 +646,20 @@ class MailController extends Controller
 
         return back();
 
+    }
+
+    public function answare(Request $request,$id)
+    {
+        MailAnswer::create([
+            'mail_id'=>$id,
+            'user_id'=>auth()->user()->id,
+            'message'=>$request->message
+        ]);
+
+        alert()->success('پیام شما با موفقیت ثبت شد', 'ثبت پیام')->autoclose(2000)->persistent('ok');
+
+
+        return back();
     }
 }
 

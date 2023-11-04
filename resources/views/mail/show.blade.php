@@ -108,6 +108,51 @@
             </div>
         </div>
     </div>
+    <div class="card">
+        <div class="card-header">
+            <span> پاسخ ها</span>
+        </div>
+        <div class="card-body">
+            <div class="container-fluid">
+
+
+                <div class="card chat-app-wrapper">
+                    <div class="row chat-app">
+                        <div class="col-lg-12 chat-body">
+
+                            <div class="chat-body-messages">
+                                <div class="message-items">
+                                    @foreach($mail->answers as $answare)
+                                        <div  @if(auth()->user()->id!=$answare->user_id) class="message-item outgoing-message" @else class="message-item" @endif>
+                                            {{$answare->message}}
+                                            <small class="message-item-date text-muted">{{\Morilog\Jalali\Jalalian::forge($answare->created_at)->format('Y-m-d H:i')}}</small>
+                                        </div>
+                                    @endforeach
+
+                                </div>
+                            </div>
+                            <div class="chat-body-footer">
+                                <form class="d-flex align-items-center" action="/mail/answare/{{$mail->id}}"
+                                      method="post">
+                                    @csrf
+                                    <input type="text" class="form-control" name="message" placeholder="پیام ...">
+                                    <div class="d-flex">
+                                        <button type="submit" class="mr-3 btn btn-primary btn-floating">
+                                            <i class="fa fa-send"></i>
+                                        </button>
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
 @endsection
 
 <?php

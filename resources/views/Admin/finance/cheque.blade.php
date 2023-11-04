@@ -90,174 +90,180 @@
     <div class="card">
         <div class="card-body">
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createCheque">
-                ثبت چک جدید
-            </button>
+{{--            @can('cheque-create')--}}
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createCheque">
+                    ثبت چک جدید
+                </button>
 
-            <!-- Modal -->
-            <div class="modal fade " id="createCheque" tabindex="-1" role="dialog"
-                 aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-                <div class="modal-dialog modal-xl" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">ثبت چک جدید</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <form method="post" action="/admin/store/cheque_cash">
-                            @csrf
-                            <input type="hidden" name="type" value="cheque">
-                            <div class="modal-body">
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <label>دانش آموز</label>
-                                        <select class="js-example-basic-single" name="user_id">
-                                            @foreach($students as $student)
-                                                <option value="{{$student->id}}">{{$student->f_name}}
-                                                    &nbsp;{{$student->l_name}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label>مبلغ(ریال)</label>
+                <!-- Modal -->
+                <div class="modal fade " id="createCheque" tabindex="-1" role="dialog"
+                     aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-xl" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">ثبت چک جدید</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form method="post" action="/admin/store/cheque_cash">
+                                @csrf
+                                <input type="hidden" name="type" value="cheque">
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label>دانش آموز</label>
+                                            <select class="js-example-basic-single" name="user_id">
+                                                @foreach($students as $student)
+                                                    <option value="{{$student->id}}">{{$student->f_name}}
+                                                        &nbsp;{{$student->l_name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label>مبلغ(ریال)</label>
 
-                                        <div class="price-box-product">
+                                            <div class="price-box-product">
 
-                                            <input required type="number" name="price" id="price" class="form-control">
-                                            <div class="price-box-product-content">
-                                                <div
-                                                    class="price-box-header-product d-flex justify-content-between align-items-center">
-                                                    <span>وضعیت مبلغ شما</span>
-                                                    <button class="close"><i
-                                                            class="ion-android-close"></i></button>
-                                                </div>
-                                                <div class="d-flex align-items-center">
-                                                    <span class="text-secondary ml-2">به عدد:</span>
-                                                    <span class="price-box-numbers ml-2">
+                                                <input required type="number" name="price" id="price"
+                                                       class="form-control">
+                                                <div class="price-box-product-content">
+                                                    <div
+                                                        class="price-box-header-product d-flex justify-content-between align-items-center">
+                                                        <span>وضعیت مبلغ شما</span>
+                                                        <button class="close"><i
+                                                                class="ion-android-close"></i></button>
+                                                    </div>
+                                                    <div class="d-flex align-items-center">
+                                                        <span class="text-secondary ml-2">به عدد:</span>
+                                                        <span class="price-box-numbers ml-2">
                                                                         </span>
-                                                    <span class="text-dark">ریال</span>
-                                                </div>
+                                                        <span class="text-dark">ریال</span>
+                                                    </div>
 
-                                                <hr>
-                                                <div class="d-flex align-items-center">
+                                                    <hr>
+                                                    <div class="d-flex align-items-center">
                                                                         <span class="text-secondary ml-2">به
                                                                             حروف:</span>
-                                                    <span class="price-box-letters ml-2">
+                                                        <span class="price-box-letters ml-2">
                                                                         </span>
-                                                    <span class="text-dark">ریال</span>
+                                                        <span class="text-dark">ریال</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label>سررسید</label>
+                                        <div class="col-md-3">
+                                            <label>سررسید</label>
 
-                                        <input required type="text" autocomplete="off" name="date-picker-shamsi-list"
-                                               class="form-control">
-                                    </div>
-                                    <div class="col-md-2">
-                                        <label>شماره چک</label>
+                                            <input required type="text" autocomplete="off"
+                                                   name="date-picker-shamsi-list"
+                                                   class="form-control">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>شماره چک</label>
 
-                                        <input required type="number" name="cheque_number" class="form-control">
-                                    </div>
-                                    <div class="col-md-1">
-                                        <label>پرداخت </label>
+                                            <input required type="number" name="cheque_number" class="form-control">
+                                        </div>
+                                        <div class="col-md-1">
+                                            <label>پرداخت </label>
 
-                                        <input type="checkbox" name="verify" class="form-control">
-                                    </div>
+                                            <input type="checkbox" name="verify" class="form-control">
+                                        </div>
 
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary btn-block">ذخیره</button>
-                            </div>
-                        </form>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary btn-block">ذخیره</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#createCache">
-                ثبت مبلغ نقدی
-            </button>
+                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#createCache">
+                    ثبت مبلغ نقدی
+                </button>
 
-            <!-- Modal -->
-            <div class="modal fade " id="createCache" tabindex="-1" role="dialog"
-                 aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">ثبت چک جدید</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <form method="post" action="/admin/store/cheque_cash">
-                            @csrf
-                            <input required type="hidden" name="type" value="cache">
-                            <div class="modal-body">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <label>دانش آموز</label>
-                                        <select class="js-example-basic-single" name="user_id">
-                                            @foreach($students as $student)
-                                                <option value="{{$student->id}}">{{$student->f_name}}
-                                                    &nbsp;{{$student->l_name}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label>مبلغ(ریال)</label>
-                                        <div class="price-box-product">
+                <!-- Modal -->
+                <div class="modal fade " id="createCache" tabindex="-1" role="dialog"
+                     aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">ثبت چک جدید</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form method="post" action="/admin/store/cheque_cash">
+                                @csrf
+                                <input required type="hidden" name="type" value="cache">
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label>دانش آموز</label>
+                                            <select class="js-example-basic-single" name="user_id">
+                                                @foreach($students as $student)
+                                                    <option value="{{$student->id}}">{{$student->f_name}}
+                                                        &nbsp;{{$student->l_name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label>مبلغ(ریال)</label>
+                                            <div class="price-box-product">
 
-                                            <input required type="number" name="price" id="price" class="form-control">
-                                            <div class="price-box-product-content">
-                                                <div
-                                                    class="price-box-header-product d-flex justify-content-between align-items-center">
-                                                    <span>وضعیت مبلغ شما</span>
-                                                    <button class="close"><i
-                                                            class="ion-android-close"></i></button>
-                                                </div>
-                                                <div class="d-flex align-items-center">
-                                                    <span class="text-secondary ml-2">به عدد:</span>
-                                                    <span class="price-box-numbers ml-2">
+                                                <input required type="number" name="price" id="price"
+                                                       class="form-control">
+                                                <div class="price-box-product-content">
+                                                    <div
+                                                        class="price-box-header-product d-flex justify-content-between align-items-center">
+                                                        <span>وضعیت مبلغ شما</span>
+                                                        <button class="close"><i
+                                                                class="ion-android-close"></i></button>
+                                                    </div>
+                                                    <div class="d-flex align-items-center">
+                                                        <span class="text-secondary ml-2">به عدد:</span>
+                                                        <span class="price-box-numbers ml-2">
                                                                         </span>
-                                                    <span class="text-dark">ریال</span>
-                                                </div>
+                                                        <span class="text-dark">ریال</span>
+                                                    </div>
 
-                                                <hr>
-                                                <div class="d-flex align-items-center">
+                                                    <hr>
+                                                    <div class="d-flex align-items-center">
                                                                         <span class="text-secondary ml-2">به
                                                                             حروف:</span>
-                                                    <span class="price-box-letters ml-2">
+                                                        <span class="price-box-letters ml-2">
                                                                         </span>
-                                                    <span class="text-dark">ریال</span>
+                                                        <span class="text-dark">ریال</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <label>سررسید</label>
+                                        <div class="col-md-2">
+                                            <label>سررسید</label>
 
-                                        <input required type="text" autocomplete="off" name="date-picker-shamsi-list"
-                                               class="form-control">
-                                    </div>
-                                    <div class="col-md-2">
-                                        <label>پرداخت </label>
+                                            <input required type="text" autocomplete="off"
+                                                   name="date-picker-shamsi-list"
+                                                   class="form-control">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>پرداخت </label>
 
-                                        <input type="checkbox" name="verify" class="form-control">
-                                    </div>
+                                            <input type="checkbox" name="verify" class="form-control">
+                                        </div>
 
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary btn-block">ذخیره</button>
-                            </div>
-                        </form>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary btn-block">ذخیره</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <button type="button" class="btn btn-success" >
+{{--            @endcan--}}
+            <button type="button" class="btn btn-success">
                 جمع مبالغ:
                 {{number_format($sum)}}
             </button>
@@ -276,6 +282,18 @@
                                     <option @if(request()->user_id==$student->id) selected
                                             @endif value="{{$student->id}}">{{$student->f_name}}
                                         &nbsp;{{$student->l_name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="p-2">
+                            <label>کلاس دانش آموز</label>
+                            <select class="js-example-basic-single" name="class">
+                                <option></option>
+                                @foreach($students->unique('class') as $student)
+                                    <option @if(request()->class==$student->class) selected
+                                            @endif value="{{$student->class}}">{{$student->class}}
+                                        &nbsp;
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
@@ -332,20 +350,23 @@
 
                         <th>شمارنده</th>
                         <th>دانش آموز</th>
+                        <th>کلاس</th>
                         <th>نوع پرداخت</th>
                         <th>شماره چک</th>
                         <th>سررسید</th>
                         <th>تاریخ ثبت</th>
                         <th>وضعیت</th>
                         <th>مبلغ(ریال)</th>
+{{--                        @can('cheque-create')--}}
 
-                        <th>تایید</th>
-                        <th>حذف</th>
+                            <th>تایید</th>
+                            <th>حذف</th>
+{{--                        @endcan--}}
                     </tr>
                     </thead>
                     <tbody id="myTable">
 
-                    <?php $idn = 1; ?>
+                        <?php $idn = 1; ?>
                     @foreach($cheques as $log)
                         <form action="{{url('/admin/finance/fish/edit').'/'.$log->id}}" method="post">
                             {{csrf_field()}}
@@ -360,6 +381,8 @@
                                     <td>{{$log->user->f_name}}
                                         {{$log->user->l_name}}
                                     </td>
+                                    <td>{{$log->user->class}}
+                                    </td>
                                     <td>
                                         @if($log->type=='cheque')
                                             چک
@@ -369,7 +392,8 @@
                                     </td>
                                     <td>{{$log->cheque_number}}</td>
                                     <td>
-                                        <input required type="text" value="{{$log->cheque_date}}" autocomplete="off" name="date-picker-shamsi-list"
+                                        <input required type="text" value="{{$log->cheque_date}}" autocomplete="off"
+                                               name="date-picker-shamsi-list"
                                                class="form-control">
                                     </td>
                                     <td>{{\Morilog\Jalali\CalendarUtils::strftime('Y-m-d', strtotime($log->created_at->toDateString()))}}</td>
@@ -380,52 +404,55 @@
                                             تایید شده
                                         @endif
                                     </td>
+{{--                                    @can('cheque-create')--}}
 
-                                    <td>
-                                        <div class="price-box-product">
+                                        <td>
+                                            <div class="price-box-product">
 
-                                            <input style="text-align: center" name="price" class="form-control"
-                                                   value="{{$log->price}}" required>
-                                            <div class="price-box-product-content">
-                                                <div
-                                                    class="price-box-header-product d-flex justify-content-between align-items-center">
-                                                    <span>وضعیت مبلغ شما</span>
-                                                    <button class="close"><i
-                                                            class="ion-android-close"></i></button>
-                                                </div>
-                                                <div class="d-flex align-items-center">
-                                                    <span class="text-secondary ml-2">به عدد:</span>
-                                                    <span class="price-box-numbers ml-2">
+                                                <input style="text-align: center" name="price" class="form-control"
+                                                       value="{{$log->price}}" required>
+                                                <div class="price-box-product-content">
+                                                    <div
+                                                        class="price-box-header-product d-flex justify-content-between align-items-center">
+                                                        <span>وضعیت مبلغ شما</span>
+                                                        <button class="close"><i
+                                                                class="ion-android-close"></i></button>
+                                                    </div>
+                                                    <div class="d-flex align-items-center">
+                                                        <span class="text-secondary ml-2">به عدد:</span>
+                                                        <span class="price-box-numbers ml-2">
                                                                         </span>
-                                                    <span class="text-dark">ریال</span>
-                                                </div>
+                                                        <span class="text-dark">ریال</span>
+                                                    </div>
 
-                                                <hr>
-                                                <div class="d-flex align-items-center">
+                                                    <hr>
+                                                    <div class="d-flex align-items-center">
                                                                         <span class="text-secondary ml-2">به
                                                                             حروف:</span>
-                                                    <span class="price-box-letters ml-2">
+                                                        <span class="price-box-letters ml-2">
                                                                         </span>
-                                                    <span class="text-dark">ریال</span>
+                                                        <span class="text-dark">ریال</span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                    </td>
-                                    <td>
-                                        <button type="submit" class="btn btn-info">تغیر وضعیت و مبلغ</button>
-                                    </td>
+                                        </td>
+                                        <td>
+                                            <button type="submit" class="btn btn-info">تغیر وضعیت و مبلغ</button>
+                                        </td>
+{{--                            @endcan--}}
                         </form>
                         <td>
-                            <button type="button" class="btn btn-danger btn-rounded" onclick="deleteData({{$log->id}})"><i
+                            <button type="button" class="btn btn-danger btn-rounded" onclick="deleteData({{$log->id}})">
+                                <i
                                     class="ti-trash"></i></button>
                         </td>
 
                         </tr>
 
-                        <?php
-                        $idn = $idn + 1;
-                        ?>
+                            <?php
+                            $idn = $idn + 1;
+                            ?>
                     @endforeach
 
                     </tbody>

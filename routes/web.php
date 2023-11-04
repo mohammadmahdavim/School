@@ -1020,6 +1020,7 @@ Route::get('mail/mailDeleteAll/{id}', 'MailController@delete');
 Route::get('mail/mailDelete/{id}', 'MailController@deletemail');
 Route::get('mail/forward/{id}', 'MailController@forward');
 Route::any('mail/forwardto/{id}', 'MailController@forwardto');
+Route::post('mail/answare/{id}', 'MailController@answare');
 
 //end rout for message
 
