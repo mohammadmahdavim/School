@@ -14,6 +14,7 @@ use App\User;
 use Charts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Morilog\Jalali\Jalalian;
 
 class ChartController extends Controller
 {
@@ -304,7 +305,7 @@ class ChartController extends Controller
                 ->pluck('avg');
 
             if (count($mark) > 0) {
-                $marks[] = ($mark[0]) * 5;
+                $marks[] = ($mark[0]);
             } else {
                 $marks[] = 0;
             }

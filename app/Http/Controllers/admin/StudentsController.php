@@ -190,7 +190,14 @@ class StudentsController extends Controller
             ]
 
         );
-
+        $national_code = $request['codemeli'];
+        $national_code = str_replace(' ', '', $national_code);
+        $lenght = \Illuminate\Support\Str::length($national_code);
+        if ($lenght == 8) {
+            $national_code = '00' . $national_code;
+        } elseif ($lenght == 9) {
+            $national_code = '0' . $national_code;
+        }
         $cover = $request->file('file');
         if (!empty($cover)) {
             $filename = time() . '.' . '.png';
@@ -209,7 +216,8 @@ class StudentsController extends Controller
                 'paye' => $request->paye,
                 'sex' => $request->sex,
                 'status' => 1,
-
+                'codemeli' => request('codemeli'),
+                'password' => Hash::make($request['codemeli']),
             ]);
         } else {
             $user = User::where('id', $id)->first();
@@ -224,9 +232,13 @@ class StudentsController extends Controller
                 'paye' => $request->paye,
                 'sex' => $request->sex,
                 'status' => 1,
+                'codemeli' => request('codemeli'),
+                'password' => Hash::make($request['codemeli']),
             ]);
         }
         $parent = User::where('id', $id + 1000)->first();
+        $codmeliparent = '1' . $national_code;
+
         if ($parent) {
             $parent->update([
                 'l_name' => $request->l_name,
@@ -235,7 +247,8 @@ class StudentsController extends Controller
                 'paye' => $request->paye,
                 'sex' => $request->sex,
                 'mobile' => request('mobile_father'),
-
+                'codemeli' => $codmeliparent,
+                'password' => Hash::make($codmeliparent),
             ]);
         }
         $student = student::where('user_id', $user->id)->first();

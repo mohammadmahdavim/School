@@ -78,6 +78,19 @@ class DisciplineController extends Controller
 
     }
 
+
+    public function all()
+    {
+        $list = Discipline::groupBy('user_id')
+            ->selectRaw('*, sum(mark) as sum')
+            ->get();
+
+        $other = User::where('role', 'دانش آموز')->whereNotIn('id', $list->pluck('user_id'))->orderBy('l_name')->get();
+
+        return view('Admin.discipline.class', compact('list', 'other'));
+
+    }
+
     /*
       مشاهده لیست دانش آموزان با نمره انضباط*
      */

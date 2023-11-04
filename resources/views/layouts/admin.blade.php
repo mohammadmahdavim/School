@@ -615,6 +615,9 @@
 
                         <li><a href="#">لیست انضباط {{config('global.students')}}</a>
                             <ul>
+                                <a href="/admin/discipline/all">
+                                    <li >همه ی موارد</li>
+                                </a>
                                 @foreach($claas as $cls)
                                     <a href="/admin/discipline/class/{{$cls->classnamber}}">
                                         <li value="{{$cls->classnamber	}}">{{$cls->paye}}

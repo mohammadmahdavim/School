@@ -307,6 +307,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['ExpireCheck', 'StatusCheck'
 
     $this::post('change_password', 'AdminController@change_password');
     $this::get('roolcall_report', 'AdminController@roolcall_report');
+    $this::get('download_absent', 'AdminController@downloadAbsent');
     $this::get('disiplin_report', 'AdminController@disiplin_report');
 
 
@@ -780,6 +781,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['ExpireCheck', 'StatusCheck'
     $this::post('discipline/store', 'DisciplineController@sstore')->middleware('can:discipline-sabt');
     $this::any('discipline/destroy/{id}', 'DisciplineController@sdestroy');
     $this::get('discipline/class/{id}', 'DisciplineController@class')->middleware('can:discipline-list');
+    $this::get('discipline/all', 'DisciplineController@all')->middleware('can:discipline-list');
     $this::get('discipline/single/{id}', 'DisciplineController@single')->middleware('can:discipline-list');
     $this::get('rollcall/class/{id}', 'DisciplineController@rollcall')->middleware('can:rollcall');
 //    end Discipline

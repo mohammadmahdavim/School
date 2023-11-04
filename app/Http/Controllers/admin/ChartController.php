@@ -34,7 +34,7 @@ class ChartController extends Controller
                 ->pluck('avg');
 
             if (count($mark) > 0) {
-                $marks[] = ($mark[0]) * 5;
+                $marks[] = ($mark[0]) ;
             } else {
                 $marks[] = 0;
             }
@@ -77,7 +77,7 @@ class ChartController extends Controller
                 ->pluck('avg');
 
             if (count($mark) > 0) {
-                $marks[] = ($mark[0]) * 5;
+                $marks[] = ($mark[0]) ;
             } else {
                 $marks[] = 0;
             }
@@ -126,7 +126,7 @@ class ChartController extends Controller
                 ->pluck('avg');
 
             if (count($mark) > 0) {
-                $marks[] = ($mark[0]) * 5;
+                $marks[] = ($mark[0]) ;
             } else {
                 $marks[] = 0;
             }
@@ -224,7 +224,7 @@ class ChartController extends Controller
                 }
 
             }
-            $a[] = ($ma / $id) * 5;
+            $a[] = ($ma / $id);
         }
 
         $chartt = Charts::create('bar', 'fusioncharts')
@@ -273,7 +273,7 @@ class ChartController extends Controller
                 }
 
             }
-            $a[] = ($ma / $id) * 5;
+            $a[] = ($ma / $id) ;
         }
 
         $chartt = Charts::create('bar', 'fusioncharts')

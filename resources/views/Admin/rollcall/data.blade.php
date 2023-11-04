@@ -42,7 +42,16 @@
 @section('content')
     <div class="card">
         <div class="card-body" style="padding-right: -10px">
+            <div class="col-md-3">
+               <a href="/admin/download_absent">
+                   <button class="btn btn-warning" type="submit">دانلود اکسل
+                       <br>
+                   <i class="fa fa-download"></i>
+                   </button>
 
+               </a>
+            </div>
+            <br>
             <form action="/admin/roolcall_report">
                 <div class="row">
                     <div class="col-md-3">
@@ -82,6 +91,7 @@
                     </div>
                 </div>
             </form>
+
             <div class="table-responsive">
                 <table class="table table-bordered table-striped mb-0 table-fixed" id="myTable">
                     <thead>

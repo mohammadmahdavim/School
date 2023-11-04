@@ -24,7 +24,6 @@ use App\Setting;
 use App\TeacherPresentDate;
 use App\User;
 use Carbon\Carbon;
-use Excel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
@@ -33,6 +32,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use JoisarJignesh\Bigbluebutton\Facades\Bigbluebutton;
+use Maatwebsite\Excel\Facades\Excel;
 use Morilog\Jalali\Jalalian;
 use PhpParser\Node\Expr\New_;
 use App\Day;
@@ -624,5 +624,22 @@ class AdminController extends Controller
           ->paginate(30);
         $allclass=clas::all();
         return view('admin.presentlist', compact('rows','allclass'));
+    }
+
+    public function downloadAbsent()
+    {
+
+        $data = RollCall::
+        join('users', 'users.id', '=', 'roll_calls.user_id')
+       -> join('users as dabir', 'dabir.id', '=', 'roll_calls.author')
+            ->select( 'users.f_name as نام', 'users.l_name as نام خانوادگی', 'users.class as شماره کلاس', 'dabir.f_name as نام دبیر', 'dabir.l_name as نام خانوادگی دبیر','roll_calls.ok as موجه', 'roll_calls.created_at as تاریخ ایجاد')
+            ->orderby('roll_calls.created_at','desc')
+            ->get()->toArray();
+
+        return Excel::create('absents', function ($excel) use ($data) {
+            $excel->sheet('absents', function ($sheet) use ($data) {
+                $sheet->fromArray($data);
+            });
+        })->download('xlsx');
     }
 }
