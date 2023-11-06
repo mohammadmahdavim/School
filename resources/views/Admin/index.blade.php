@@ -297,10 +297,15 @@
         </div>
         <div class="card  col-md-4">
             <div class="card-body">
-                <h5 class="card-title">غایب های امروز
+                <h5 class="card-title">
+                    <img src="/assets/images/icon/absents.png" width="50" height="50">
+
+                    غایب های امروز
                     &nbsp;
                     <span style="font-size: 14px">
-                        <a href="/admin/student/rollcall/today_absent">بیشتر ...</a>
+                        <a href="/admin/student/rollcall/today_absent">بیشتر ...
+
+                        </a>
                     </span>
                 </h5>
 
@@ -313,7 +318,10 @@
         </div>
         <div class="card  col-md-4">
             <div class="card-body">
-                <h5 class="card-title">موارد انضباطی امروز
+                <h5 class="card-title">
+                    <img src="/assets/images/icon/disipline.png" width="50" height="50">
+
+                    موارد انضباطی امروز
                     &nbsp;
                     <span style="font-size: 14px">
                         <a href="/admin/disiplin_report">بیشتر ...</a>

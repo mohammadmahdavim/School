@@ -57,6 +57,7 @@
                     <th>عکس</th>
                     <th>نام</th>
                     <th>مورد ثبت شده</th>
+                    <th>توضیحات دبیر</th>
                     <th>نمره کسر شده</th>
                     <th>تاریخ ثبت</th>
                     <th>حذف مورد</th>
@@ -83,6 +84,7 @@
                         </td>
                         <td>{{$disiplin->user->f_name}} - {{$disiplin->user->l_name}}</td>
                         <td>{{$disiplin->CDisciplines->name}}</td>
+                        <td>{{$disiplin->description}}</td>
                         <td style="background-color: #b91d19;color: black">{{($disiplin->mark)}}</td>
                         <td>{{$disiplin->created_at->toDateString()}}</td>
                         <td style="text-align: center">
@@ -101,11 +103,9 @@
                     <td>
                         نمره انضباط کل
                     </td>
-                    <td></td>
-                    <td></td>
-                    <td style="background-color: lightskyblue ;color: black">{{(100-$total)}}</td>
-                    <td style="text-align: center"></td>
-                    <td></td>
+
+                    <td style="background-color: lightskyblue ;color: black" colspan="6">{{(20-$total)}}</td>
+
 
                 </tr>
 

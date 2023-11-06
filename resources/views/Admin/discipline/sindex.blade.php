@@ -42,6 +42,19 @@
                 @csrf
                 <div class="d-flex flex-row">
                     <div class="p-2">
+                        <label>دانش آموز</label>
+
+                        <select name="user_id" class="js-example-basic-single">
+                            <option></option>
+                            @foreach($users as $user)
+                                <option @if($user->id==request()->user_id) selected
+                                        @endif value="{{$user->id}}">{{$user->f_name}} {{$user->l_name}}</option>
+                            @endforeach
+                        </select>
+                        <br>
+                    </div>
+                    <div class="p-2">
+                        <br>
                         <input type="text" name="start_date" id="date-picker-shamsi"
                                class="form-control text-right"
                                value="{{request()->start_date}}" placeholder="تاریخ ثبت از ..."
@@ -49,6 +62,7 @@
                         <br>
                     </div>
                     <div class="p-2">
+                        <br>
                         <input type="text" name="end_date" id="date-picker-shamsi-new"
                                class="form-control text-right"
                                value="{{request()->end_date}}" placeholder="تاریخ ثبت تا ..."
@@ -57,6 +71,7 @@
                     </div>
 
                     <div class="p-2">
+                        <br>
                         <button type="submit" class="btn btn-warning">جستجوکن</button>
                     </div>
                 </div>

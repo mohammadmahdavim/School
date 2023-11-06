@@ -79,15 +79,25 @@ class DisciplineController extends Controller
     }
 
 
-    public function all()
+    public function all(Request $request)
     {
         $list = Discipline::groupBy('user_id')
+            ->when($request->get('user_id'), function ($query) use ($request) {
+                $query->where('user_id', $request->user_id);
+            })
+
             ->selectRaw('*, sum(mark) as sum')
             ->get();
 
-        $other = User::where('role', 'دانش آموز')->whereNotIn('id', $list->pluck('user_id'))->orderBy('l_name')->get();
+        $other = User::where('role', 'دانش آموز')
+            ->when($request->get('user_id'), function ($query) use ($request) {
+                $query->where('id', $request->user_id);
+            })
+            ->whereNotIn('id', $list->pluck('user_id'))->orderBy('l_name')->get();
 
-        return view('Admin.discipline.class', compact('list', 'other'));
+        $users = user::where('role', 'دانش آموز')->get();
+
+        return view('Admin.discipline.class', compact('list', 'other','users'));
 
     }
 
@@ -234,10 +244,15 @@ class DisciplineController extends Controller
 
                 $query->where('date', '<=', $request->end_date);
             })
+            ->when($request->get('user_id'), function ($query) use ($request) {
+
+                $query->where('user_id',  $request->user_id);
+            })
             ->orderByDesc('date')
             ->paginate(20);
+        $users = user::where('role', 'دانش آموز')->get();
 
-        return view('Admin.discipline.sindex', compact('disciplines'));
+        return view('Admin.discipline.sindex', compact('disciplines','users'));
     }
 
     /*

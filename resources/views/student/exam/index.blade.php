@@ -143,7 +143,12 @@
 <?php
 function getexpire($exam)
 {
+
     $expire = $exam->expire;
+    if(!$expire)
+    {
+        return 'هنوز فرصت دارید.';
+    }
     $date = explode('/', $expire);
     $toGregorian = \Morilog\Jalali\CalendarUtils::toGregorian($date[0], $date[1], $date[2]);
     $gregorian = implode('-', $toGregorian) . ' ' . '23:59:59';

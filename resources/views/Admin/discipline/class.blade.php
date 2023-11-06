@@ -1,27 +1,21 @@
 @extends('layouts.admin')
 @section('css')
+    <link rel="stylesheet" href="/assets/vendors/datepicker-jalali/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="/assets/vendors/datepicker/daterangepicker.css">
+    <link rel="stylesheet" href="/assets/vendors/select2/css/select2.min.css" type="text/css">
 
 @endsection('css')
 @section('script')
-    <script src="/assets/js/jquery.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $("#myInput").on("keyup", function () {
-                var value = $(this).val().toLowerCase();
-                $("#myTable tr").filter(function () {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                });
-            });
-        });
-    </script>
-@endsection('css')
-@section('script')
-
-
-    <!-- begin::sweet alert demo -->
     <script src="/js/sweetalert.min.js"></script>
     @include('sweet::alert')
-    <!-- begin::sweet alert demo -->
+    <!-- begin::select2 -->
+    <script src="/assets/vendors/select2/js/select2.min.js"></script>
+    <script src="/assets/js/examples/select2.js"></script>
+    <!-- end::select2 -->
+    <script src="/assets/vendors/datepicker-jalali/bootstrap-datepicker.min.js"></script>
+    <script src="/assets/vendors/datepicker-jalali/bootstrap-datepicker.fa.min.js"></script>
+    <script src="/assets/vendors/datepicker/daterangepicker.js"></script>
+    <script src="/assets/js/examples/datepicker.js"></script>
 @endsection('script')
 @section('navbar')
 
@@ -49,8 +43,25 @@
     <div class="card">
         <div class="card-body">
 
-            <input id="myInput" type="text" placeholder="نام دانش آموز را وارد کنید" class="form-control col-md-4">
-            <br>
+            <form action="/admin/discipline/all">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label>دانش آموز</label>
+
+                        <select name="user_id" class="js-example-basic-single">
+                            <option></option>
+                            @foreach($users as $user)
+                                <option @if($user->id==request()->user_id) selected
+                                        @endif value="{{$user->id}}">{{$user->f_name}} {{$user->l_name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <br>
+                        <button class="btn btn-info" type="submit">جستجو</button>
+                    </div>
+                </div>
+            </form>            <br>
             <div class="table-responsive">
                 <table class="table  table-bordered table-striped mb-0 table-fixed" id="myTable">
                     <thead>
