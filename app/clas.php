@@ -19,4 +19,9 @@ class clas extends Model
             ->where('role','دانش آموز');
 
     }
+
+    public function teacher_present()
+    {
+        return $this->hasMany(TeacherPresentDate::class,'class_id','id')->orderBy('updated_at','asc');
+    }
 }

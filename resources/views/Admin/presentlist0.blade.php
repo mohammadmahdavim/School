@@ -32,8 +32,7 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="#">داشبورد</a></li>
                     <li class="breadcrumb-item active" aria-current="page">
-                        لیست حضورغیاب
-                    </li>
+                        لیست حضورغیاب</li>
                 </ol>
             </nav>
         </div>
@@ -46,9 +45,24 @@
             <form action="/admin/present_list">
                 <div class="row">
                     <div class="col-md-3">
-                        <label> تاریخ</label>
+                        <label>از تاریخ</label>
                         <input class="form-control" name="date_from" id="date-picker-shamsi" autocomplete="off"
                                value="{{request()->date_from}}">
+                    </div>
+                    <div class="col-md-3">
+                        <label>تا تاریخ</label>
+                        <input class="form-control" name="date_to" id="date-picker-shamsi-new" autocomplete="off"
+                               value="{{request()->date_to}}">
+                    </div>
+                    <div class="col-md-3">
+                        <label>کلاس</label>
+                        <select class="form-control" name="class">
+                            <option></option>
+                            @foreach($allclass as $clasR)
+                                <option
+                                    @if(request()->class==$clasR->id) selected @endif value="{{$clasR->id}}">{{$clasR->classnamber}}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="col-md-3">
                         <br>
@@ -62,12 +76,11 @@
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped mb-0 table-fixed" id="myTable">
                         <thead>
-                        تاریخ:
-                        {{\Morilog\Jalali\Jalalian::forge($date)->format('%A, %d %B %Y')}}
                         <tr style="text-align: center">
 
+                            <th>دبیر</th>
                             <th>کلاس</th>
-                            <th>دبیران</th>
+                            <th>تاریخ</th>
 
 
                         </tr>
@@ -76,15 +89,9 @@
                         @include('Admin.errors')
                         @foreach($rows as $row )
                             <tr style="text-align: center">
-                                <td>{{$row->classnamber}}</td>
-                                <td>
-                                    @foreach($row->teacher_present as $teacher_present)
-                                        <span class="btn btn-sm btn-primary">
-                                            {{$teacher_present->user->f_name}} {{$teacher_present->user->l_name}} - ({{(\Morilog\Jalali\Jalalian::fromCarbon($teacher_present->updated_at))->format('H:i')}})
-                                        </span>
-                                        &nbsp;
-                                    @endforeach
-                                </td>
+                                <td>{{$row->user->f_name}} {{$row->user->l_name}}</td>
+                                <td>{{$row->class->classnamber}}</td>
+                                <td>{{(\Morilog\Jalali\Jalalian::fromCarbon($row->created_at))->format('%A, %d %B')}}</td>
                             </tr>
                         @endforeach
                         </tbody>
@@ -93,5 +100,8 @@
                 </div>
             </div>
         </div>
+
+
+
 
 @endsection('content')

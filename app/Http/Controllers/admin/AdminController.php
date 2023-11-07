@@ -409,7 +409,7 @@ class AdminController extends Controller
 
     public function karnamehshow($name, $class)
     {
-        $students = User::where('class', $class)->where('role','دانش آموز')->
+        $students = User::where('class', $class)->where('role', 'دانش آموز')->
         with(['karnameadmin' => function ($query) use ($name) {
             $query->where('name', $name);
         }])->get();
@@ -609,21 +609,31 @@ class AdminController extends Controller
 
     public function present_list(Request $request)
     {
-        $rows = TeacherPresentDate::orderBy('created_at', 'desc')
-            ->when($request->get('class'), function ($query) use ($request) {
-                $query->where('class_id', $request->class);
-            })
+        $date = Carbon::now()->toDateString();
 
-            ->when($request->get('date_from'), function ($query) use ($request) {
-                $query->where('created_at', '>=', \Morilog\Jalali\Jalalian::fromFormat('Y/m/d', $request->date_from)->toCarbon());
-            })
-            ->when($request->get('date_to'), function ($query) use ($request) {
-                $query->where('created_at', '<=',\Morilog\Jalali\Jalalian::fromFormat('Y/m/d', $request->date_to)->toCarbon());
-            })
-          ->with('class')
-          ->paginate(30);
-        $allclass=clas::all();
-        return view('admin.presentlist', compact('rows','allclass'));
+        if ($request->date_from) {
+            $date = Jalalian::fromFormat('Y/m/d', $request->date_from)->toCarbon()->toDateString();
+
+        }
+        $rows = clas::
+        with(['teacher_present' => function ($query) use ($date) {
+            $query->whereDate('created_at', $date);
+        }])
+            ->get();
+//        $rows = TeacherPresentDate::orderBy('created_at', 'desc')
+//            ->when($request->get('class'), function ($query) use ($request) {
+//                $query->where('class_id', $request->class);
+//            })
+//            ->when($request->get('date_from'), function ($query) use ($request) {
+//                $query->where('created_at', '>=', \Morilog\Jalali\Jalalian::fromFormat('Y/m/d', $request->date_from)->toCarbon());
+//            })
+//            ->when($request->get('date_to'), function ($query) use ($request) {
+//                $query->where('created_at', '<=', \Morilog\Jalali\Jalalian::fromFormat('Y/m/d', $request->date_to)->toCarbon());
+//            })
+//            ->with('class')
+//            ->paginate(30);
+        $allclass = clas::all();
+        return view('admin.presentlist', compact('rows', 'allclass','date'));
     }
 
     public function downloadAbsent()
@@ -631,9 +641,9 @@ class AdminController extends Controller
 
         $data = RollCall::
         join('users', 'users.id', '=', 'roll_calls.user_id')
-       -> join('users as dabir', 'dabir.id', '=', 'roll_calls.author')
-            ->select( 'users.f_name as نام', 'users.l_name as نام خانوادگی', 'users.class as شماره کلاس', 'dabir.f_name as نام دبیر', 'dabir.l_name as نام خانوادگی دبیر','roll_calls.ok as موجه', 'roll_calls.created_at as تاریخ ایجاد')
-            ->orderby('roll_calls.created_at','desc')
+            ->join('users as dabir', 'dabir.id', '=', 'roll_calls.author')
+            ->select('users.f_name as نام', 'users.l_name as نام خانوادگی', 'users.class as شماره کلاس', 'dabir.f_name as نام دبیر', 'dabir.l_name as نام خانوادگی دبیر', 'roll_calls.ok as موجه', 'roll_calls.created_at as تاریخ ایجاد')
+            ->orderby('roll_calls.created_at', 'desc')
             ->get()->toArray();
 
         return Excel::create('absents', function ($excel) use ($data) {
