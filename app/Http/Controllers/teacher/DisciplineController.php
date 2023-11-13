@@ -4,6 +4,7 @@ namespace App\Http\Controllers\teacher;
 
 use App\CDiscipline;
 use App\Discipline;
+use App\teacher;
 use App\User;
 use http\Client\Response;
 use Illuminate\Http\Request;
@@ -18,17 +19,22 @@ class DisciplineController extends Controller
     public function index(Request $request, $id)
     {
 //return $request;
-        $disciplines = DB::table('disciplines')->where('class', $id)
-            ->when($request->get('start_date'), function ($query) use ($request) {
-                $query->where('date', '>=', $request->start_date);
-            })
-            ->when($request->get('end_date'), function ($query) use ($request) {
+        $exite = teacher::where('user_id', auth()->user()->id)->where('class_id', $id)->first();
 
-                $query->where('date', '<=', $request->end_date);
-            })
-            ->orderByDesc('date')
-            ->paginate(20);
+        if ($exite) {
+            $disciplines = DB::table('disciplines')->where('class', $id)
+                ->when($request->get('start_date'), function ($query) use ($request) {
+                    $query->where('date', '>=', $request->start_date);
+                })
+                ->when($request->get('end_date'), function ($query) use ($request) {
 
+                    $query->where('date', '<=', $request->end_date);
+                })
+                ->orderByDesc('date')
+                ->paginate(20);
+        } else {
+            return view('errors.404');
+        }
 //return $disciplines;
         return view('Teacher.discipline.sindex', compact('disciplines', 'id'));
     }
@@ -40,9 +46,15 @@ class DisciplineController extends Controller
      */
     public function screate($id)
     {
+        $exite = teacher::where('user_id', auth()->user()->id)->where('class_id', $id)->first();
+
+        if ($exite) {
         $students = User::where('class', $id)->where('role', 'دانش آموز')->orderBy('l_name', 'desc')->get();
 
         $disciplines = CDiscipline::all();
+        } else {
+            return view('errors.404');
+        }
         return view('Teacher.discipline.screate', compact('students', 'disciplines', 'id'));
     }
 

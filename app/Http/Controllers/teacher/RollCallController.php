@@ -27,9 +27,15 @@ class RollCallController extends Controller
     public function index($id)
     {
 //        return Carbon::now()->toDateString();
+        $exite=teacher::where('user_id',auth()->user()->id)->where('class_id',$id)->first();
+
+        if (auth()->user()->role == 'معلم' and $exite) {
         $data = User::where('role', 'دانش آموز')->where('class', $id)
             ->with('rollcall')
             ->get();
+        } else {
+            return view('errors.404');
+        }
         return view('Teacher.rollcall.index', compact('data', 'id'));
     }
 

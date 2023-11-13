@@ -32,7 +32,9 @@ class StudentsController extends Controller
     public function class(request $request, $id)
     {
 //        single page for ClassStudent
-        if (auth()->user()->role == 'معلم') {
+        $exite=teacher::where('user_id',auth()->user()->id)->where('class_id',$id)->first();
+
+        if (auth()->user()->role == 'معلم' and $exite) {
 
             $users = User::where('class', $id)->where('role','دانش آموز')->orderBy('l_name', 'desc')->get();
             $classnamber = clas::where('classnamber', $id)->first();

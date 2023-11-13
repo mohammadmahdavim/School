@@ -35,8 +35,11 @@ class MarkController extends Controller
 
     public function index($idc, $iddars)
     {
+        $exite = teacher::where('user_id', auth()->user()->id)->where('class_id', $idc)
+            ->where('dars',$iddars)
+            ->first();
 
-        if (auth()->user()->role == 'معلم' or auth()->user()->role=='مدیر') {
+        if ((auth()->user()->role == 'معلم' or auth()->user()->role=='مدیر') and $exite) {
 
             $darss = dars::where('id', $iddars)->first()['name'];
 

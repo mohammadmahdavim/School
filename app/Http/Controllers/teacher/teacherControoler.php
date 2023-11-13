@@ -80,7 +80,8 @@ class teacherControoler extends Controller
 
     public function class($id)
     {
-        if (auth()->user()->role == 'معلم') {
+        $exite=teacher::where('user_id',auth()->user()->id)->where('id',$id)->first();
+        if (auth()->user()->role == 'معلم' and $exite) {
             $clas = teacher::where('id', $id)->with('users')->first();
             $films = Film::where('class_id', $clas->class_id)->where('dars', $clas->dars)->where('user_id', auth()->user()->id)->orderBy('created_at', 'desc')->get()->take(3);
             $sections = FilmSection::where('section_id', 0)->get();

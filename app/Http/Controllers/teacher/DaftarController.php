@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\teacher;
 
 use App\Daftar;
+use App\teacher;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -11,7 +12,15 @@ class DaftarController extends Controller
 {
     public function date($class, $dars)
     {
-        return view('Teacher.daftar.date', compact('class', 'dars'));
+        $exite = teacher::where('user_id', auth()->user()->id)->where('class_id', $class)
+            ->where('dars', $dars)
+            ->first();
+
+        if (auth()->user()->role == 'معلم' and $exite) {
+            return view('Teacher.daftar.date', compact('class', 'dars'));
+        } else {
+            return view('errors.404');
+        }
     }
 
     public function select(Request $request)
@@ -97,7 +106,7 @@ class DaftarController extends Controller
             }
 
         }
-        alert()->success('عملیات با موفقیت انجام شد','عملیات موفق');
+        alert()->success('عملیات با موفقیت انجام شد', 'عملیات موفق');
 
         $users = User::where('class', $request->idclass)
             ->where('role', 'دانش آموز')
@@ -124,7 +133,6 @@ class DaftarController extends Controller
         $dars = $request->iddars;
         return view('includ.daftar', compact('users', 'class', 'dars', 'date'));
     }
-
 
 
 }
