@@ -40,9 +40,77 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-            <p style="text-align: center;font-size: x-large;color: black">{{$mykarnamehs[0]->name}}</p>
-            <p style="text-align: right;font-size: x-large;color: black">{{$mykarnamehs[0]->user->l_name}}
-                - {{$mykarnamehs[0]->user->f_name}}</p>
+            <div class="card">
+                <div class="card-body border">
+                    {{--                        <p style="text-align: center;font-size: medium;color: black"> کارنامه ماهانه {{$KarnamehName}}</p>--}}
+                    <div class="d-flex justify-content-between">
+                        <div class="p-2">
+                            <img src="https://s6.uupload.ir/files/untitled-1_o82b.png" height="100px" width="100px">
+
+                        </div>
+                        <div class="p-2">
+                            <p style="text-align: center;font-size: medium;color: black">
+                                @include('includ.name')
+                                <br>
+                                سال تحصیلی:1402-1403
+                                <br>
+                                کارنامه {{$mykarnamehs[0]->name}}
+                            </p>
+                        </div>
+                        <?php
+                        $user = $mykarnamehs[0]->user;
+                        ?>
+                        <div class="p-2">
+                            <figure class="avatar avatar-xl">
+                                @if(!empty($user->filename))
+                                    <img class="rounded-circle"
+                                         src="{{url('uploads/'.$user->filename)}}"
+                                         alt="...">
+                                @else
+                                    <img class="rounded-circle" src="/assets/profile/avatar.png"
+                                         alt="...">
+                                @endisset
+                            </figure>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-3">
+                            نام:
+                            {{$user->f_name}}
+                            <br>
+                            نام خانوادگی:
+                            {{$user->l_name}}
+
+
+                        </div>
+                        <div class="col-6" style="text-align: center">
+
+                            شماره دانش آموزی:
+                            {{$user->shomarande}}
+
+                            <br>
+                            پایه:
+                            {{$user->paye}}
+
+
+                        </div>
+                        <div class="col-3">
+                            <?php
+                            $class = \App\clas::where('classnamber', $user->class)->first();
+                            ?>
+                            رشته تحصیلی:
+                            {{$class->reshte}}
+                            <br>
+                            کلاس:
+                            {{$class->description}}
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
 
             <div class="table-responsive">
 
@@ -53,10 +121,15 @@
                         <th>نام درس</th>
                         <th>واحد</th>
                         <th>نمره</th>
+                        <th>رتبه در کلاس</th>
+                        <th>رتبه در پایه</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <?php $idn = 1 ?>
+                    <?php $idn = 1;
+                    $clRank = 0;
+                    $paRank = 0;
+                    ?>
                     @foreach($mykarnamehs as $mykarnameh)
                         @if(($mykarnameh->mark)<10)
                             <tr style="background-color: red">
@@ -71,9 +144,27 @@
                                 <td>{{$mykarnameh->dars->name}}</td>
                                 <td>{{$mykarnameh->dars->vahed}}</td>
                                 <td style="color: black">{{($mykarnameh->mark)}}</td>
+                                <td>{{$clR=getclassrank($mykarnameh->id)}}</td>
+                                <td>{{$paR=getpayerank($mykarnameh->id)}}</td>
                             </tr>
-                            <?php $idn = $idn + 1; ?>
+                                <?php $idn = $idn + 1;
+                                $clRank=$clR+$clRank;
+                                $paRank=$paR+$paRank;
+                                ?>
+
+
                             @endforeach
+                            <tr>
+
+
+                                <td>#</td>
+
+                                <td>معدل</td>
+                                <td></td>
+                                <td style="color: black">{{$moadel}}</td>
+                                <td>{{round($clRank/$idn)}}</td>
+                                <td>{{round($paRank/$idn)}}</td>
+                            </tr>
                     </tbody>
                 </table>
 
@@ -81,7 +172,7 @@
             </div>
             <div class="text-right">
                 <p class="font-weight-bolder primary-font">معدل با تاثیر ضریب : <b
-                            style="color: #0a6aa1">{{$moadel}}</b></p>
+                        style="color: #0a6aa1">{{$moadel}}</b></p>
 
             </div>
             <br>
@@ -93,4 +184,40 @@
 @endsection('content')
 
 
+<?php
+
+
+function getclassrank($id)
+{
+    $row = \Illuminate\Support\Facades\DB::table('karnameh_admins')->where('id', $id)->first();
+    $class = \App\User::where('id', $row->user_id)->pluck('class')->first();
+    $classUsers = \App\User::where('class', $class)->where('role', 'دانش آموز')->pluck('id');
+    $mykarnamehs = \Illuminate\Support\Facades\DB::table('karnameh_admins')->where('dars_id', $row->dars_id)->whereIn('user_id', $classUsers)
+        ->select(\Illuminate\Support\Facades\DB::raw('mark,  user_id'))
+        ->groupBy('user_id')
+        ->orderby('mark', 'DESC')
+        ->get();
+    $data = $mykarnamehs->where('mark', $row->mark);
+    $value = $data->keys()->first() + 1;
+    return $value;
+
+}
+
+function getpayerank($id)
+{
+    $row = \Illuminate\Support\Facades\DB::table('karnameh_admins')->where('id', $id)->first();
+    $paye = \App\User::where('id', $row->user_id)->pluck('paye')->first();
+    $class = \App\clas::where('paye', $paye)->pluck('classnamber');
+    $classUsers = \App\User::whereIn('class', $class)->where('role', 'دانش آموز')->pluck('id');
+    $mykarnamehs = \Illuminate\Support\Facades\DB::table('karnameh_admins')->where('dars_id', $row->dars_id)->whereIn('user_id', $classUsers)
+        ->select(\Illuminate\Support\Facades\DB::raw('mark,  user_id'))
+        ->groupBy('user_id')
+        ->orderby('mark', 'DESC')
+        ->get();
+    $data = $mykarnamehs->where('mark', $row->mark);
+    $value = $data->keys()->first() + 1;
+    return $value;
+
+}
+?>
 

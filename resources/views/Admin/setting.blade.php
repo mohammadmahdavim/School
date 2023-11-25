@@ -150,12 +150,37 @@
                                 <label class="custom-control-label" for="customRadio2">توصیفی</label>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <br>
-                    <button class="btn btn-info" type="submit">ثبت</button>
+                        <br>
+                        <label> ارسال پیامک</label>
+                        <div class="d-flex flex-row">
 
+                            <div class="p-2"> انضباطی
+                                <input name="disipline_status" type="checkbox" style="width: 20px;height: 20px" @if($setting->disipline_status==1) checked
+                                       @endif
+                                       class="form-control checkbox"></div>
+                            <div class="p-2">غیبت
+                                <input name="absent_sms" type="checkbox" style="width: 20px;height: 20px" @if($setting->absent_sms==1) checked
+                                       @endif
+                                       class="form-control checkbox">
+                            </div>
+                            <div class="p-2">بوفه
+                                <input name="product_sms" type="checkbox" style="width: 20px;height: 20px" @if($setting->product_sms==1) checked
+                                       @endif
+                                       class="form-control checkbox">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+
+                    <div class="col-md-12">
+                        <br>
+                        <button class="btn btn-info btn-block" type="submit">ثبت</button>
+
+                    </div>
                 </div>
             </form>
         </div>

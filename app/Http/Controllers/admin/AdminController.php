@@ -359,6 +359,70 @@ class AdminController extends Controller
         return redirect('admin/converse')->with('status', 'مطلب شما با موفقیت ایجاد شد');
     }
 
+    public function about()
+    {
+        $data = Home::where('place', 'درباره')->first();
+        return view('Admin.home.about', compact('data'));
+    }
+
+    public function aboutstore(Request $request)
+    {
+        $this->validate(request(), [
+            'title' => 'required',
+            'place' => 'required',
+            'body' => 'required',
+        ]);
+
+        $data = Home::where('place', 'درباره')->first();
+        if ($data) {
+            $data->update([
+                'body' => request('body')
+            ]);
+        } else {
+//        ایجاد ردیف در جدول home
+            $data = Home::create([
+                'title' => request('title'),
+                'body' => request('body'),
+                'place' => request('place'),
+                'user_id' => auth()->user()->id,
+                'created_at' => Jalalian::now(),
+                'updated_at' => Jalalian::now(),
+            ]);
+        }
+
+
+//        ایجاد فایل مناسب برای عکس ها
+        $patchfile = $request->file('patchfile');
+        if (!empty($request->patchfile)) {
+            $delimages = HomeImage::where('matlab_id', $data->id)->get();
+            foreach ($delimages as $delimage) {
+                $delimage->delete();
+
+            }
+
+
+            $cover = $patchfile;
+            $filename = time() . '.' . '.png';
+            $path = public_path('/images/' . $filename);
+            Image::make($cover->getRealPath())->resize(1275, 804)->save($path);
+            $extension = $cover->getClientOriginalExtension();
+            $mime = $cover->getClientMimeType();
+            $original_filename = $cover->getClientOriginalName();
+
+
+//  ایجاد یک ردیف برای ذخیره عکس در جدول imagehome
+            HomeImage::create([
+                'matlab_id' => $data->id,
+                'mime' => $mime,
+                'original_filename' => $original_filename,
+                'filename' => $filename,
+                'resize_image' => $filename,
+            ]);
+        }
+
+        return redirect('admin/about')->with('status', 'مطلب شما با موفقیت ایجاد شد');
+    }
+
     public function mainpagedelete($id)
     {
         $site = MainPagee::find($id);
@@ -499,8 +563,23 @@ class AdminController extends Controller
             'mark2' => 'required',
             'mark3' => 'required',
         ]);
+        $status = 0;
+        if ($request->disipline_status == 'on') {
+            $status = 1;
+        }
+        $absentstatus = 0;
+        if ($request->absent_sms == 'on') {
+            $absentstatus = 1;
+        }
+        $productstatus = 0;
+        if ($request->product_sms == 'on') {
+            $productstatus = 1;
+        }
         $row = Setting::all()->first();
         $row->update([
+            'disipline_status' => $status,
+            'product_sms' => $productstatus,
+            'absent_sms' => $absentstatus,
             'name' => $request->name,
             'student' => $request->student,
             'students' => $request->students,

@@ -197,6 +197,10 @@ $this::post('/student/finance/finance/online', 'student\FinanceController@pay');
 
 Route::group(['prefix' => 'student', 'middleware' => ['ExpireCheck', 'StatusCheck', 'FinanceCheck'], 'namespace' => 'student'], function () {
 
+    $this::get('/products', 'ProductController@index');
+    $this::post('/products/pay', 'ProductController@pay');
+    $this::post('/products/reserve', 'ProductController@reserve');
+    $this::get('/reserves', 'ProductController@reserves');
 
     $this::get('/pattern', 'PatternController@index');
     $this::get('/pattern/doros/{id}', 'PatternController@doros');
@@ -303,6 +307,13 @@ Route::group(['prefix' => 'student', 'middleware' => ['ExpireCheck', 'StatusChec
 
 Route::group(['prefix' => 'admin', 'middleware' => ['ExpireCheck', 'StatusCheck'], 'namespace' => 'admin'], function () {
 
+    $this::resource('products', 'ProductController');
+    $this::get('/reserves', 'ProductController@reserves');
+    $this::get('/reserves/export', 'ProductController@excel_reserve');
+    $this::any('/reserves/change_type', 'ProductController@change_type');
+    $this::any('products/delete/{id}', 'ProductController@destroy');
+
+
     $this::get('present_list', 'AdminController@present_list');
 
     $this::post('change_password', 'AdminController@change_password');
@@ -331,7 +342,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['ExpireCheck', 'StatusCheck'
 
     $this::post('get-dars-by-class', 'TeacherController@getDars');
 
-        $this::get('/pattern', 'PatternController@index');
+    $this::get('/pattern', 'PatternController@index');
     $this::get('/pattern/create', 'PatternController@create');
     $this::post('/pattern/store', 'PatternController@store');
     $this::get('/pattern/doros/{id}', 'PatternController@doros');
@@ -516,6 +527,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['ExpireCheck', 'StatusCheck'
     Route::get('/converse', 'AdminController@converse')->name('admin.converse');
     Route::post('/converse/store', 'AdminController@conversestore');
 
+    Route::get('/about', 'AdminController@about');
+    Route::post('/about/store', 'AdminController@aboutstore');
+
     Route::get('/home', 'AdminController@index')->name('admin.home');
     Route::post('/home/job', 'AdminController@job');
     Route::post('/home/delete/{id}', 'AdminController@delete');
@@ -604,7 +618,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['ExpireCheck', 'StatusCheck'
     Route::get('/mainpage', 'AdminController@mainpage')->middleware('can:view-delete-homepage');;
     Route::any('/mainpage/store', 'AdminController@mainpagestore')->middleware('can:view-delete-homepage');;
     Route::any('/mainpage/storee', 'AdminController@mainpagestoree')->middleware('can:view-delete-homepage');;
-	  Route::any('/mainpage/storeefooter', 'AdminController@mainpagestoreefooter')->middleware('can:view-delete-homepage');
+    Route::any('/mainpage/storeefooter', 'AdminController@mainpagestoreefooter')->middleware('can:view-delete-homepage');
     Route::get('/mainpage/delete/{id}', 'AdminController@mainpagedelete')->middleware('can:view-delete-homepage');;
 //    end home route
 

@@ -20,7 +20,9 @@ class Payment extends Model
         'type',
         'status',
         'ip',
-        'description'
+        'description',
+        'for',
+        'table_id'
     ];
 
 }

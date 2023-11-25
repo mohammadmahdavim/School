@@ -484,6 +484,12 @@
                     &nbsp &nbsp
                     <span>الگو مطالعه</span></a>
             </li>
+                <li>
+                    <a href="/student/products">
+                        <i class="fa fa-cutlery"></i>
+                        &nbsp &nbsp
+                        <span>بوفه</span></a>
+                </li>
         </ul>
 
 

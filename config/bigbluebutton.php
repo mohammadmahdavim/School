@@ -1,13 +1,13 @@
 <?php
-//$setting = \App\Setting::where('id', 1)->first();
+$setting = \App\Setting::where('id', 1)->first();
 
 return [
     /**
      * Default BigBlueButton Server Configurations
      * By default load this configuration not a multiple server configuration.
      */
-//    'BBB_SECURITY_SALT' => env('BBB_SECURITY_SALT', $setting->BBB_SECURITY_SALT),
-//    'BBB_SERVER_BASE_URL' => env('BBB_SERVER_BASE_URL', $setting->BBB_SERVER_BASE_URL),
+    'BBB_SECURITY_SALT' => env('BBB_SECURITY_SALT', $setting->BBB_SECURITY_SALT),
+    'BBB_SERVER_BASE_URL' => env('BBB_SERVER_BASE_URL', $setting->BBB_SERVER_BASE_URL),
 
     /**
      * For Multiple BigBlueButton Server Configurations
@@ -16,8 +16,8 @@ return [
      */
     'servers' => [
         'server1' => [
-//            'BBB_SECURITY_SALT' => $setting->BBB_SECURITY_SALT_2,
-//            'BBB_SERVER_BASE_URL' => $setting->BBB_SERVER_BASE_URL_2,
+            'BBB_SECURITY_SALT' => $setting->BBB_SECURITY_SALT_2,
+            'BBB_SERVER_BASE_URL' => $setting->BBB_SERVER_BASE_URL_2,
         ],
         'server2' => [
             'BBB_SECURITY_SALT' => '',

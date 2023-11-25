@@ -19,6 +19,8 @@ class FinanceCheck
      */
     public function handle($request, Closure $next)
     {
+        return $next($request);
+
         $setting = Setting::where('id', 1)->first();
         $cheque = LogFinanace::whereIn('type', ['cheque', 'cache'])
             ->where('user_id', auth()->user()->id)
@@ -64,7 +66,7 @@ class FinanceCheck
      }
 
 else{
-    
+
                 return $next($request);
 
 }

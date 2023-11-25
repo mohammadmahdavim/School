@@ -5,7 +5,9 @@ namespace App\Http\Controllers\teacher;
 use App\clas;
 use App\dars;
 use App\Http\Controllers\Controller;
+use App\lib\Kavenegar;
 use App\RollCall;
+use App\Setting;
 use App\teacher;
 use App\TeacherPresentDate;
 use App\User;
@@ -52,6 +54,10 @@ class RollCallController extends Controller
             'updated_at' => Jalalian::now(),
             'created_at' => Carbon::now(),
         ]);
+        if (Setting::where('id', 1)->pluck('absent_sms')->first() == 1) {
+            $user = User::where('id', $id)->first();
+            Kavenegar::sendSMS($user->mobile, 'امروز', 'absent');
+        }
         alert()->success('وضعیت دانش آموز به غایب تغییر پیدا کرد', 'موفق');
 
         return back();

@@ -6,10 +6,12 @@ use App\Archive;
 use App\clas;
 use App\CommentMoshaver;
 use App\FileMoshaver;
+use App\lib\Kavenegar;
 use App\MeetingUser;
 use App\Moshaver;
 use App\paye;
 use App\RollCallMoshaver;
+use App\Setting;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -105,6 +107,10 @@ class MoshverController extends Controller
             'user_id' => $id,
             'moshavers_id' => $moshavers_id,
         ]);
+        if (Setting::where('id', 1)->pluck('absent_sms')->first() == 1) {
+            $user = User::where('id', $id)->first();
+            Kavenegar::sendSMS($user->mobile, 'امروز', 'absent');
+        }
         alert()->success('وضعیت دانش آموز به غایب تغییر پیدا کرد', 'موفق');
 
         return back();

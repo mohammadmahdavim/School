@@ -95,7 +95,8 @@
                             <li class=""><a href="/blogs">وبلاگ {{config('global.student')}}</a></li>
                             <li><a href="/view/گالری تصویر">گالری تصاویر</a></li>
                             <li><a href="/pre-registration" style="color: red">پیش ثبت نام</a></li>
-                            <li><a href="/question" style="color: blue">تالار گفتمان</a></li>
+                            <li><a href="/question" style="color: #899804">تالار گفتمان</a></li>
+                            <li><a href="/about_us" >درباره ما</a></li>
 
                         </ul>
                     </nav>

@@ -6,7 +6,9 @@ use App\CDiscipline;
 use App\clas;
 use App\Discipline;
 use App\Http\Controllers\Controller;
+use App\lib\Kavenegar;
 use App\RollCall;
+use App\Setting;
 use App\User;
 use Carbon\Carbon;
 use ConsoleTVs\Charts\Facades\Charts;
@@ -85,7 +87,6 @@ class DisciplineController extends Controller
             ->when($request->get('user_id'), function ($query) use ($request) {
                 $query->where('user_id', $request->user_id);
             })
-
             ->selectRaw('*, sum(mark) as sum')
             ->get();
 
@@ -97,7 +98,7 @@ class DisciplineController extends Controller
 
         $users = user::where('role', 'دانش آموز')->get();
 
-        return view('Admin.discipline.class', compact('list', 'other','users'));
+        return view('Admin.discipline.class', compact('list', 'other', 'users'));
 
     }
 
@@ -223,6 +224,13 @@ class DisciplineController extends Controller
             'created_at' => Jalalian::now(),
             'updated_at' => Jalalian::now(),
         ]);
+        $setting = \App\Setting::where('id', 1)->first();
+        if ($setting->disipline == 1) {
+            $name = CDiscipline::where('id', $request->discipline)->pluck('name')->first();
+            $name = str_replace(' ', '', $name);
+            Kavenegar::sendSMS($user->mobile, $name, 'disipline');
+        }
+
         alert()->success(' مورد انضباطی با موفقیت ثبت شد.', 'ثبت مورد انضباطی')->autoclose(3000);
 
         return back();
@@ -246,13 +254,13 @@ class DisciplineController extends Controller
             })
             ->when($request->get('user_id'), function ($query) use ($request) {
 
-                $query->where('user_id',  $request->user_id);
+                $query->where('user_id', $request->user_id);
             })
             ->orderByDesc('date')
             ->paginate(20);
         $users = user::where('role', 'دانش آموز')->get();
 
-        return view('Admin.discipline.sindex', compact('disciplines','users'));
+        return view('Admin.discipline.sindex', compact('disciplines', 'users'));
     }
 
     /*

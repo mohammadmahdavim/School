@@ -441,9 +441,9 @@ class HomeController extends Controller
         $rows = MainPage::where('id', 1)->first();
         $rowsss = MainPagee::where('id', 1)->first();
         $rowss = MainPagee::whereNotin('id', [1])->orderbydesc('created_at')->get();
-        $guides = Home::where('place', 'راهنما')->orderbydesc('created_at')->get();
+        $data = Home::where('place', 'درباره')->orderbydesc('created_at')->first();
 
-        return view('home.us', compact('guides', 'recents', 'rowsss', 'rows', 'rowss'));
+        return view('home.us', compact('data', 'recents', 'rowsss', 'rows', 'rowss'));
 
     }
 

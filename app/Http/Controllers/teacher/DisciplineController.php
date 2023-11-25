@@ -4,6 +4,7 @@ namespace App\Http\Controllers\teacher;
 
 use App\CDiscipline;
 use App\Discipline;
+use App\lib\Kavenegar;
 use App\teacher;
 use App\User;
 use http\Client\Response;
@@ -85,6 +86,12 @@ class DisciplineController extends Controller
             'created_at' => Jalalian::now(),
             'updated_at' => Jalalian::now(),
         ]);
+        $setting = \App\Setting::where('id', 1)->first();
+        if ($setting->disipline == 1) {
+            $name = CDiscipline::where('id', $request->discipline)->pluck('name')->first();
+            $name = str_replace(' ', '', $name);
+            Kavenegar::sendSMS($user->mobile, $name, 'disipline');
+        }
         alert()->success(' مورد انضباطی با موفقیت ثبت شد.', 'ثبت مورد انضباطی')->autoclose(3000);
 
         return back();

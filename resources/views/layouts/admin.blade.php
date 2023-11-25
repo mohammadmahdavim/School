@@ -340,6 +340,8 @@
                                 </ul>
                             </li>
                         @endcan
+                        <li><a href="/admin/products"> بوفه</a></li>
+                        <li><a href="/admin/about"> درباره ما</a></li>
 
                     </ul>
                 </li>
@@ -678,6 +680,39 @@
             <li><a href="widgets.html"><i class="icon-stack-text"></i> &nbsp &nbsp<span>کارنامه ها</span>
                 </a>
                 <ul>
+                    <li><a href="/admin/karnameh">تولید توسط {{config('global.admin')}}</a>
+                        <ul>
+
+                            <li><a href="/admin/karnameh">کارنامه جدید</a></li>
+                            <li><a href="#">مشاهده کارنامه ها</a>
+                                <ul>
+                                    @foreach($newkarname as $newkarnam)
+                                        <li><a href="#">{{$newkarnam->name}}</a>
+                                            <ul>
+                                                @foreach($paye as $pay)
+                                                    <li style="font-size: small"><a
+                                                            href="#">{{$pay->name}}</a>
+                                                        <ul>
+                                                            @foreach($claas->where('paye',$pay->name) as $cls)
+                                                                <a href="/admin/karnameh/show/{{$newkarnam->name}}/{{$cls->classnamber}}">
+                                                                    <li style="font-size: smaller">
+                                                                        {{$cls->description}}</li>
+                                                                </a>
+                                                            @endforeach
+                                                        </ul>
+                                                    </li>
+
+                                                    </a>
+                                                @endforeach
+                                            </ul>
+                                        </li>
+                                    @endforeach
+                                </ul>
+
+                            </li>
+                        </ul>
+                    </li>
+
                     <li><a href="/admin/karnameh">درخواست از {{config('global.teacher')}}</a>
                         <ul>
                             <li><a href="/admin/karnameh/request">درخواست جدید</a>
