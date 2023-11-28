@@ -672,7 +672,7 @@ class AdminController extends Controller
             ->when($request->get('date_to'), function ($query) use ($request) {
                 $query->where('updated_at', '<=', str_replace('/', '-', $request->date_to));
             })
-            ->orderByDesc('user_id')
+            ->orderByDesc('created_at')
             ->get();
         $classR = clas::all();
         $users = user::where('role', 'دانش آموز')->get();
