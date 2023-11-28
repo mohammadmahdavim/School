@@ -761,6 +761,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['ExpireCheck', 'StatusCheck'
 
 //    create karnameh with manager
     $this::get('karnameh', 'AdminController@karnamehcreate')->middleware('can:karnameh');
+    $this::get('karnamehlist', 'AdminController@karnamehlist')->middleware('can:karnameh');
+    $this::get('karnamehlist/delete/{name}', 'AdminController@karnamehlist_delete')->middleware('can:karnameh');
     $this::post('karnameh/store', 'AdminController@karnamehstore')->middleware('can:karnameh');
     $this::get('karnameh/show/{name}/{class}', 'AdminController@karnamehshow')->middleware('can:karnameh');
     $this::get('karnameh/newstudent/show/{name}/{user}/{moadel}', 'AdminController@skarnamehshow')->middleware('can:karnameh');
@@ -818,6 +820,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['ExpireCheck', 'StatusCheck'
 //route for teacher
 
 Route::group(['prefix' => 'teacher', 'middleware' => ['TecherCheck', 'ExpireCheck', 'StatusCheck'], 'namespace' => 'teacher'], function () {
+
+    $this::post('/rollcallsabt', 'RollCallController@rollcallsabt');
 
     $this::post('/absent/store/{id}', 'RollCallController@absent_store')->name('online_class');
 

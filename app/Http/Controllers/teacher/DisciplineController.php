@@ -87,9 +87,9 @@ class DisciplineController extends Controller
             'updated_at' => Jalalian::now(),
         ]);
         $setting = \App\Setting::where('id', 1)->first();
-        if ($setting->disipline == 1) {
+        if ($setting->disipline_status == 1) {
             $name = CDiscipline::where('id', $request->discipline)->pluck('name')->first();
-            $name = str_replace(' ', '', $name);
+            $name = str_replace(' ', ' ', $name);
             Kavenegar::sendSMS($user->mobile, $name, 'disipline');
         }
         alert()->success(' مورد انضباطی با موفقیت ثبت شد.', 'ثبت مورد انضباطی')->autoclose(3000);

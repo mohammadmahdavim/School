@@ -482,8 +482,33 @@ class AdminController extends Controller
 
     public function skarnamehshow($name, $user, $moadel)
     {
-        $mykarnamehs = KarnamehAdmin::where('name', $name)->where('user_id', $user)->get();
+        $class = User::where('id', $user)->pluck('class')->first();
+        $mykarnamehs = KarnamehAdmin::where('name', $name)
+            ->whereHas('teacher', function ($q) use ($class) {
+                $q->where('class_id', $class);
+            })
+            ->with('teacher.users')
+            ->where('user_id', $user)->get();
         return view('Admin.karnameh.newskarnameh', compact('mykarnamehs', 'moadel'));
+    }
+
+    public function karnamehlist()
+    {
+        $mykarnamehs = KarnamehAdmin::all();
+        $mykarnamehs = $mykarnamehs->unique('name');
+
+        return view('Admin.karnameh.karnamehlist', compact('mykarnamehs'));
+    }
+
+    public function karnamehlist_delete($name)
+    {
+        $mykarnamehs = KarnamehAdmin::where('name', $name)->get();
+        foreach ($mykarnamehs as $mykarnameh) {
+            $mykarnameh->delete();
+        }
+        alert()->success('کارنامه با موفقیت حذف شد.', 'عملیات موفق');
+
+        return back();
     }
 
 
@@ -712,7 +737,7 @@ class AdminController extends Controller
 //            ->with('class')
 //            ->paginate(30);
         $allclass = clas::all();
-        return view('admin.presentlist', compact('rows', 'allclass','date'));
+        return view('admin.presentlist', compact('rows', 'allclass', 'date'));
     }
 
     public function downloadAbsent()

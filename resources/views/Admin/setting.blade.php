@@ -153,7 +153,6 @@
                         <br>
                         <label> ارسال پیامک</label>
                         <div class="d-flex flex-row">
-
                             <div class="p-2"> انضباطی
                                 <input name="disipline_status" type="checkbox" style="width: 20px;height: 20px" @if($setting->disipline_status==1) checked
                                        @endif

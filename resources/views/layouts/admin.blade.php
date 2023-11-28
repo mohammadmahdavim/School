@@ -684,6 +684,7 @@
                         <ul>
 
                             <li><a href="/admin/karnameh">کارنامه جدید</a></li>
+                            <li><a href="/admin/karnamehlist">لیست</a></li>
                             <li><a href="#">مشاهده کارنامه ها</a>
                                 <ul>
                                     @foreach($newkarname as $newkarnam)

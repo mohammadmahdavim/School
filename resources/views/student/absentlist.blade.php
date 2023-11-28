@@ -101,6 +101,7 @@
                             <th>نام خانوادگی</th>
                             <th>دبیر</th>
                             <th>تاریخ غیبت</th>
+                            <th>وضعیت</th>
                             <th>توضیحات</th>
 
 
@@ -115,6 +116,15 @@
                                 <td>{{$user->teacher->f_name}} {{$user->teacher->l_name}}</td>
 
                                 <td>{{(\Morilog\Jalali\Jalalian::fromCarbon($user->created_at))}}</td>
+                                <td>
+                                    @if($user->ok==1)
+                                        <span style="color:red">موجه</span>
+
+                                    @else
+                                        <span style="color: #0d8d2d">غیر موجه</span>
+
+                                    @endif
+                                </td>
                                 <td>
                                     <button type="button" class="btn btn-primary" data-toggle="modal"
                                             data-target="#exampleModal{{$user->id}}">
@@ -139,7 +149,8 @@
 
                                                     <div class="modal-body">
                                                         <label>توضیحات</label>
-                                                        <input class="form-control" name="description" value="{{$user->description}}">
+                                                        <input class="form-control" name="description"
+                                                               value="{{$user->description}}">
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary"
@@ -161,8 +172,5 @@
                 </div>
             </div>
         </div>
-
-
-
 
 @endsection('content')

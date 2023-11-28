@@ -29,12 +29,12 @@ class RollCallController extends Controller
     public function index($id)
     {
 //        return Carbon::now()->toDateString();
-        $exite=teacher::where('user_id',auth()->user()->id)->where('class_id',$id)->first();
+        $exite = teacher::where('user_id', auth()->user()->id)->where('class_id', $id)->first();
 
         if (auth()->user()->role == 'معلم' and $exite) {
-        $data = User::where('role', 'دانش آموز')->where('class', $id)
-            ->with('rollcall')
-            ->get();
+            $data = User::where('role', 'دانش آموز')->where('class', $id)
+                ->with('rollcall')
+                ->get();
         } else {
             return view('errors.404');
         }
@@ -46,21 +46,27 @@ class RollCallController extends Controller
     {
         $user = User::where('id', $id)->first();
         \App\lib\Kavenegar::sendSMS($user->mobile, '', '');
-
-        RollCall::create([
-            'user_id' => $id,
-            'author' => auth()->user()->id,
-            'class_id' => User::where('id', $id)->pluck('class')->first(),
-            'updated_at' => Jalalian::now(),
-            'created_at' => Carbon::now(),
-        ]);
-        if (Setting::where('id', 1)->pluck('absent_sms')->first() == 1) {
-            $user = User::where('id', $id)->first();
-            Kavenegar::sendSMS($user->mobile, 'امروز', 'absent');
+        $row = RollCall::where('user_id', $id)
+            ->where('author', auth()->user()->id)
+            ->where('updated_at', Jalalian::now()->format('Y-m-d'))
+            ->first();
+        if (!$row) {
+            RollCall::create([
+                'user_id' => $id,
+                'author' => auth()->user()->id,
+                'class_id' => User::where('id', $id)->pluck('class')->first(),
+                'updated_at' => Jalalian::now(),
+                'created_at' => Carbon::now(),
+            ]);
         }
-        alert()->success('وضعیت دانش آموز به غایب تغییر پیدا کرد', 'موفق');
 
-        return back();
+//        if (Setting::where('id', 1)->pluck('absent_sms')->first() == 1) {
+//            $user = User::where('id', $id)->first();
+//            Kavenegar::sendSMS($user->mobile, 'امروز', 'absent');
+//        }
+//        alert()->success('وضعیت دانش آموز به غایب تغییر پیدا کرد', 'موفق');
+
+//        return back();
     }
 
     public function absenttopresent($id)
@@ -73,6 +79,7 @@ class RollCallController extends Controller
 
     public function absentlist($id)
     {
+
         $data = RollCall::where('user_id', $id)->where('author', auth()->user()->id)->with('user')->orderByDesc('created_at')->get();
         $clasid = User::where('id', $id)->pluck('class')->first();
         return view('Teacher.rollcall.absentlist', compact('data', 'clasid'));
@@ -100,8 +107,8 @@ class RollCallController extends Controller
                 'class_id' => $class
             ]);
         }
-        alert()->success('اطلاعات ثبت شد', 'موفق');
-        return back();
+//        alert()->success('اطلاعات ثبت شد', 'موفق');
+//        return back();
     }
 
     public function absent_store(Request $request, $id)
@@ -124,6 +131,36 @@ class RollCallController extends Controller
             'created_at' => $date,
         ]);
         alert()->success('وضعیت دانش آموز به غایب تغییر پیدا کرد', 'موفق');
+
+        return back();
+    }
+
+    public function rollcallsabt(Request $request)
+    {
+        foreach ($request->id as $user => $status) {
+
+            if ($status == 2) {
+                $this->presenttoabsent($user);
+            } else {
+                $row = RollCall::where('user_id', $user)->where('author', auth()->user()->id)
+                    ->where('updated_at', Jalalian::now()->format('Y-m-d'))
+                    ->first();
+                if ($row) {
+                    $row->delete();
+                }
+            }
+        }
+        $class = User::where('id', $user)->pluck('class')->first();
+        $class = clas::where('classnamber', $class)->pluck('id')->first();
+        $check = TeacherPresentDate::where('user_id', auth()->user()->id)->where('class_id', $class)->where('created_at', Carbon::now()->toDateString())->first();
+        if (!$check) {
+            TeacherPresentDate::create([
+                'user_id' => auth()->user()->id,
+                'created_at' => Carbon::now()->toDateString(),
+                'class_id' => $class
+            ]);
+        }
+        alert()->success('حضور غیاب ثبت شد.', 'موفق');
 
         return back();
     }

@@ -5,8 +5,17 @@
             .noprint {
                 visibility: hidden;
                 display: none;
-
             }
+        }
+
+        @page {
+            margin: 0;
+        }
+        .page-break {
+            page-break-before: always;
+        }
+        #printContent {
+            display: block;
         }
     </style>
 @endsection('css')
@@ -38,7 +47,9 @@
     </div>
 @endsection('header')
 @section('content')
-    <div class="card">
+    <div class="page-break"></div>
+
+    <div class="card" id="printContent">
         <div class="card-body">
             <div class="card">
                 <div class="card-body border">
@@ -119,6 +130,7 @@
                     <tr class="bg-dark text-white">
                         <th>#</th>
                         <th>نام درس</th>
+                        <th>دبیر</th>
                         <th>واحد</th>
                         <th>نمره</th>
                         <th>رتبه در کلاس</th>
@@ -141,7 +153,8 @@
 
                                 <td>{{$idn}}</td>
 
-                                <td>{{$mykarnameh->dars->name}}</td>
+                                <td>{{$mykarnameh->dars->name}} </td>
+                                <td>{{count($mykarnameh->teacher)>0 ?  $mykarnameh->teacher[0]->users->f_name : ''}} {{count($mykarnameh->teacher)>0 ?  $mykarnameh->teacher[0]->users->l_name : ''}} </td>
                                 <td>{{$mykarnameh->dars->vahed}}</td>
                                 <td style="color: black">{{($mykarnameh->mark)}}</td>
                                 <td>{{$clR=getclassrank($mykarnameh->id)}}</td>
