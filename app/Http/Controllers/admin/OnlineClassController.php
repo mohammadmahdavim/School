@@ -77,8 +77,9 @@ class OnlineClassController extends Controller
             }
         }
         if ($request['server'] == 'sky') {
+//            $lastRecord = OnlineClass::latest()->first();
             $params = [
-                "name" => $this->generateRandomString(),
+                "name" => 'room' . time(),
                 "title" => "$request->title",
                 "guest_login" => false,
                 "op_login_first" => true,
@@ -302,26 +303,25 @@ class OnlineClassController extends Controller
             'time' => $time,
         ]);
 
-if($url==null)
-{
-     if ($class['server'] == 1) {
-            \Bigbluebutton::create([
-                'meetingID' => $class->id,
-                'meetingName' => $class->title,
-                'attendeePW' => 'attendee',
-                'moderatorPW' => 'moderator'
-            ]);
-        } elseif ($class['server'] == 2) {
-            \Bigbluebutton::server('server1')->create([
-               'meetingID' => $class->id,
-                'meetingName' => $class->title,
-                'attendeePW' => 'attendee',
-                'moderatorPW' => 'moderator'
-            ]);
-        }
-                return redirect('/admin/online/join/'.$class->id);
+        if ($url == null) {
+            if ($class['server'] == 1) {
+                \Bigbluebutton::create([
+                    'meetingID' => $class->id,
+                    'meetingName' => $class->title,
+                    'attendeePW' => 'attendee',
+                    'moderatorPW' => 'moderator'
+                ]);
+            } elseif ($class['server'] == 2) {
+                \Bigbluebutton::server('server1')->create([
+                    'meetingID' => $class->id,
+                    'meetingName' => $class->title,
+                    'attendeePW' => 'attendee',
+                    'moderatorPW' => 'moderator'
+                ]);
+            }
+            return redirect('/admin/online/join/' . $class->id);
 
-}
+        }
 
         return redirect()->to($url);
 
@@ -341,7 +341,7 @@ if($url==null)
         $students = User::where('class', $class->class_id)->where('role', 'دانش آموز')
             ->with([
                 'online_list' => function ($query) use ($id, $version) {
-                    $query->where('class_id', $id)->where('version', $version)->select('class_id', 'user_id','time');
+                    $query->where('class_id', $id)->where('version', $version)->select('class_id', 'user_id', 'time');
                 },
             ])
             ->select('codemeli', 'f_name', 'l_name', 'fname', 'class', 'id')

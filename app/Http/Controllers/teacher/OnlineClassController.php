@@ -80,8 +80,9 @@ class OnlineClassController extends Controller
             }
         }
         if ($request['server'] == 'sky') {
+//            $lastRecord = OnlineClass::latest()->first();
             $params = [
-                "name" => $this->generateRandomString(),
+                "name" => 'room' . time(),
                 "title" => "$request->title",
                 "guest_login" => false,
                 "op_login_first" => true,
@@ -304,8 +305,8 @@ class OnlineClassController extends Controller
             'date' => $date,
             'time' => $time,
         ]);
-        
-        
+
+
         if($url==null)
 {
      if ($class['server'] == 1) {
