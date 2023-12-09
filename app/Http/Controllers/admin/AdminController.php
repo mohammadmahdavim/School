@@ -4,6 +4,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\clas;
+use App\dars;
 use App\Discipline;
 use App\Finanace;
 use App\FirstMessage;
@@ -477,7 +478,108 @@ class AdminController extends Controller
         with(['karnameadmin' => function ($query) use ($name) {
             $query->where('name', $name);
         }])->get();
-        return view('Admin.karnameh.newstudent', compact('students', 'class'));
+        return view('Admin.karnameh.newstudent', compact('students', 'class', 'name'));
+    }
+
+//    function cmp($a, $b)
+//    {
+//        return strcmp($a["avg"], $b["avg"]);
+//    }
+    public function karnamehexcelavg($class, $name)
+    {
+        $students = User::where('class', $class)
+            ->where('role', 'دانش آموز')->
+            with(['karnameadmin' => function ($query) use ($name) {
+                $query->where('name', $name);
+            }])->get();
+        $data = [];
+        foreach ($students as $student) {
+            $data[] = [
+                'نام' => $student->f_name,
+                'نام خانوادگی' => $student->l_name,
+                'معدل' => round($student->karnameadmin->avg('mark'), 2),
+            ];
+        }
+        usort($data, function ($a, $b) {
+            return $b['معدل'] <=> $a['معدل'];
+        });
+
+        $cls = clas::where('classnamber', $class)->first();
+
+        return Excel::create(' خروجی  معدل کلاس '. $cls->description.' کارنامه '.$name, function ($excel) use ($data) {
+            $excel->sheet('خروجی نمرات', function ($sheet) use ($data) {
+                $sheet->fromArray($data);
+            });
+        })->download('xlsx');
+    }
+
+    public function karnamehexcelmark($class, $name)
+    {
+        $students = User::where('class', $class)->where('role', 'دانش آموز')->
+        with(['karnameadmin' => function ($query) use ($name) {
+            $query->where('name', $name);
+        }])->get();
+        $cls = clas::where('classnamber', $class)->first();
+        $courses = dars::where('paye', $cls->paye)->where('reshte', $cls->reshte)->get();
+        $data = [];
+        $result = [];
+
+        $result = [];
+
+        $students = User::where('class', $class)
+            ->where('role', 'دانش آموز')
+            ->with(['karnameadmin' => function ($query) use ($name) {
+                $query->where('name', $name);
+            }])
+            ->get();
+
+// Assuming $students is a collection of User models with related karnameadmin data
+
+// Create an array to store the results
+        $result = [];
+        $d = [];
+        $d[] = '#';
+        foreach ($courses as $cours) {
+            $d[] = $cours->name;
+        }
+        $result[]=$d;
+// Create an array to store the total marks for each course
+        $totalMarks = array_fill_keys($courses->pluck('name')->toArray(), 0);
+
+        foreach ($students as $student) {
+            // Get the student's name
+            $studentName = $student->f_name . ' ' . $student->l_name;
+
+            // Create an array to store the student's marks for each course
+            $studentMarks = [];
+
+            // Loop through each course to ensure all courses are included in the result
+            foreach ($courses as $course) {
+                // Find the corresponding karnameadmin record for the current course
+                $karnameadmin = $student->karnameadmin->firstWhere('dars_id', $course->id);
+
+                // Add the mark to the studentMarks array
+                $mark = $karnameadmin ? $karnameadmin->mark : null;
+                $studentMarks[] = $mark;
+
+                // Update the total marks for the current course
+                $totalMarks[$course->name] += $mark ?? 0;
+            }
+
+            // Add the student's marks to the result array
+            $result[] = array_merge([$studentName], $studentMarks);
+        }
+
+        $data = [];
+        foreach ($result as $subArray) {
+            $data[] = (object)$subArray;
+        }
+//return $data->toArray();
+        return Excel::create(' خروجی  ریز نمرات کلاس '. $cls->description.' کارنامه '.$name, function ($excel) use ($result) {
+            $excel->sheet('خروجی نمرات', function ($sheet) use ($result) {
+                $sheet->fromArray($result);
+            });
+        })->download('xlsx');
     }
 
     public function skarnamehshow($name, $user, $moadel)

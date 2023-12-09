@@ -765,6 +765,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['ExpireCheck', 'StatusCheck'
     $this::get('karnamehlist/delete/{name}', 'AdminController@karnamehlist_delete')->middleware('can:karnameh');
     $this::post('karnameh/store', 'AdminController@karnamehstore')->middleware('can:karnameh');
     $this::get('karnameh/show/{name}/{class}', 'AdminController@karnamehshow')->middleware('can:karnameh');
+    $this::get('karnameh/excelavg/{name}/{class}', 'AdminController@karnamehexcelavg')->middleware('can:karnameh');
+    $this::get('karnameh/excelmark/{name}/{class}', 'AdminController@karnamehexcelmark')->middleware('can:karnameh');
     $this::get('karnameh/newstudent/show/{name}/{user}/{moadel}', 'AdminController@skarnamehshow')->middleware('can:karnameh');
 
 //    end karnameh

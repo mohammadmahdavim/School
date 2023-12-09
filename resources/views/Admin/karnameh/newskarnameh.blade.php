@@ -56,7 +56,7 @@
                     {{--                        <p style="text-align: center;font-size: medium;color: black"> کارنامه ماهانه {{$KarnamehName}}</p>--}}
                     <div class="d-flex justify-content-between">
                         <div class="p-2">
-                            <img src="https://s6.uupload.ir/files/untitled-1_o82b.png" height="100px" width="100px">
+                            <img src="{{'/uploads/'.\App\Setting::first()->logo}}" height="100px" width="100px">
 
                         </div>
                         <div class="p-2">
@@ -125,9 +125,9 @@
 
             <div class="table-responsive">
 
-                <table class="table m-t-b-50">
+                <table class="table table-bordered">
                     <thead>
-                    <tr class="bg-dark text-white">
+                    <tr style="text-align: center;background-color: #e7e4e4" >
                         <th>#</th>
                         <th>نام درس</th>
                         <th>دبیر</th>
@@ -144,10 +144,10 @@
                     ?>
                     @foreach($mykarnamehs as $mykarnameh)
                         @if(($mykarnameh->mark)<10)
-                            <tr style="background-color: red">
+                            <tr style="background-color: red;text-align: center">
 
                         @else
-                            <tr>
+                            <tr style="text-align: center">
 
                                 @endif
 
@@ -167,12 +167,13 @@
 
 
                             @endforeach
-                            <tr>
+                            <tr style="text-align: center;background-color: #c9c6c6">
 
 
                                 <td>#</td>
 
                                 <td>معدل</td>
+                                <td></td>
                                 <td></td>
                                 <td style="color: black">{{$moadel}}</td>
                                 <td>{{round($clRank/$idn)}}</td>

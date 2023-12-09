@@ -68,8 +68,17 @@
     </div>
 @endsection('header')
 @section('content')
+
     <div class="card">
         <div class="card-body">
+            <a href="/admin/karnameh/excelavg/{{$class}}/{{$name}}">
+                <button class="btn btn-warning">اکسل معدل</button>
+            </a>
+            <a href="/admin/karnameh/excelmark/{{$class}}/{{$name}}">
+                <button class="btn btn-warning">اکسل ریز نمرات</button>
+            </a>
+            <br>
+            <br>
             {{--            <p style="text-align: center;font-size: x-large;color: black">{{\App\RKarnameh::where('id',$idk)->first()['name']}}</p>--}}
 
             <div style="text-align: right">
