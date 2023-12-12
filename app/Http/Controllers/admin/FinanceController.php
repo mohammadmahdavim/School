@@ -60,7 +60,7 @@ class FinanceController extends Controller
 
     public function paid()
     {
-        $paides = LogFinanace::with('user')->paginate(20);
+        $paides = LogFinanace::with('user')->orderBy('created_at','desc')->paginate(20);
         return view('Admin.finance.paid', ['paides' => $paides]);
 
     }
@@ -82,7 +82,7 @@ class FinanceController extends Controller
 
     public function fish()
     {
-        $fishs = LogFinanace::where('type', 'fish')->with('user')->orderBy('created_at')->paginate(20);
+        $fishs = LogFinanace::where('type', 'fish')->with('user')->orderBy('created_at','desc')->paginate(20);
         return view('Admin.finance.fish', ['fishs' => $fishs]);
     }
 
