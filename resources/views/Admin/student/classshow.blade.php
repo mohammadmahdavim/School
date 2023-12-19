@@ -69,6 +69,7 @@
                         <th>کد ملی</th>
                         <th>ویرایش اطلاعات</th>
                         <th>تغییر رمز</th>
+                        <th>کارت ورود به جلسه</th>
                         <th>حذف</th>
 
                     </tr>
@@ -157,6 +158,11 @@
                                 </div>
                             </div>
 
+                        </td>
+                        <td>
+                            <a href="/admin/student/card/{{$user->id}}">
+                                <button class="btn btn-warning">نمایش</button>
+                            </a>
                         </td>
                         <td>
                             <div>

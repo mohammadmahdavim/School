@@ -6,9 +6,11 @@ use App\clas;
 use App\ExamClass;
 use App\Http\Controllers\Controller;
 use App\paye;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ClassController extends Controller
 {
@@ -63,7 +65,7 @@ class ClassController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -93,7 +95,7 @@ class ClassController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -121,14 +123,14 @@ class ClassController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         $clas = clas::where('id', $id)->first();
-        $exams=ExamClass::where('class_id',$id)->get();
-        foreach ($exams as $exam){
+        $exams = ExamClass::where('class_id', $id)->get();
+        foreach ($exams as $exam) {
             $exam->delete();
 
         }
@@ -136,7 +138,6 @@ class ClassController extends Controller
         alert()->success('کلاس  شما با موفقیت حذف شد', 'حذف کلاس')->autoclose(2000)->persistent('ok');
         return back();
     }
-
 
 
     public function paye()
@@ -167,5 +168,33 @@ class ClassController extends Controller
         $row = paye::where('id', $id)->first();
         $row->delete();
 
+    }
+
+    public function students_export($id)
+    {
+        $list = User::
+        where('role', 'دانش آموز')
+            ->where('class', $id)
+            ->select('*')
+            ->get();
+        $data = [];
+        $i = 1;
+
+            foreach ($list as $li) {
+
+                $data[] = [
+                    'ردیف' => $i,
+                    'شمارنده دانش آموزی' => $li->shomarandeh,
+                    'نام و نام خانوادگی' => $li->f_name . ' ' . $li->l_name,
+                    'توضیحات' => '',
+                ];
+                $i += 1;
+            }
+        $class = clas::where('classnamber', $id)->first();
+        return Excel::create('کلاس ' . $class->description, function ($excel) use ($data) {
+            $excel->sheet('users', function ($sheet) use ($data) {
+                $sheet->fromArray($data);
+            });
+        })->download('xlsx');
     }
 }

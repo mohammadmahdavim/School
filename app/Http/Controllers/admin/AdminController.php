@@ -487,12 +487,19 @@ class AdminController extends Controller
 //    }
     public function karnamehexcelavg($class, $name)
     {
+        $cls = clas::where('classnamber', $class)->first();
+
         $students = User::where('class', $class)
             ->where('role', 'دانش آموز')->
             with(['karnameadmin' => function ($query) use ($name) {
                 $query->where('name', $name);
             }])->get();
         $data = [];
+        $data[] = [
+            'نام' => $cls->description,
+            'کارنامه' => ' کارنامه '.$name,
+            'معدل' => 100,
+        ];
         foreach ($students as $student) {
             $data[] = [
                 'نام' => $student->f_name,
@@ -504,7 +511,6 @@ class AdminController extends Controller
             return $b['معدل'] <=> $a['معدل'];
         });
 
-        $cls = clas::where('classnamber', $class)->first();
 
         return Excel::create(' خروجی  معدل کلاس '. $cls->description.' کارنامه '.$name, function ($excel) use ($data) {
             $excel->sheet('خروجی نمرات', function ($sheet) use ($data) {
@@ -538,7 +544,7 @@ class AdminController extends Controller
 // Create an array to store the results
         $result = [];
         $d = [];
-        $d[] = '#';
+        $d[] = $cls->description.' کارنامه '.$name;
         foreach ($courses as $cours) {
             $d[] = $cours->name;
         }

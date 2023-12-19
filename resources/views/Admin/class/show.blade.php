@@ -48,6 +48,7 @@
                             <th>شماره کلاس</th>
                             <th>توضیحات</th>
                             <th>ویرایش</th>
+                            <th>اکسل دانش آموزان</th>
                             <th>حذف</th>
 
                         </tr>
@@ -112,6 +113,11 @@
 
                                     </td>
                             </form>
+                            <td>
+                                <a href="/admin/class/students/export/{{$clas->classnamber}}">
+                                    <button class="btn btn-warning">دانلود</button>
+                                </a>
+                            </td>
                             <td>
                                 <div>
                                     <button class="btn btn-danger" onclick="deleteData({{$clas->id}})">حذف</button>

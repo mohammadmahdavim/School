@@ -383,4 +383,11 @@ class StudentsController extends Controller
 
         return view('Admin.parent.show', compact('users'));
     }
+
+    public function card($id)
+    {
+        $user = User::find($id);
+        return view('Admin.student.card', compact('user'));
+
+    }
 }

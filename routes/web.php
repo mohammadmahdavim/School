@@ -307,6 +307,21 @@ Route::group(['prefix' => 'student', 'middleware' => ['ExpireCheck', 'StatusChec
 
 Route::group(['prefix' => 'admin', 'middleware' => ['ExpireCheck', 'StatusCheck'], 'namespace' => 'admin'], function () {
 
+    $this::get('/template_selection_index', 'NewTemplateAnswerController@template_selection_index');
+    $this::get('/template_selection_questions/{id}', 'NewTemplateAnswerController@template_selection_questions');
+    $this::post('/template_selection_store', 'NewTemplateAnswerController@template_selection_store');
+    $this::any('/template_selection_update/{id}', 'NewTemplateAnswerController@template_selection_update');
+    $this::any('/template_selection_delete/{id}', 'NewTemplateAnswerController@template_selection_delete');
+    $this::post('/template_selection_questions_store', 'NewTemplateAnswerController@template_selection_questions_store');
+    $this::any('/template_selection_questions_delete/{id}', 'NewTemplateAnswerController@template_selection_questions_delete');
+
+
+    $this::get('/selection_index', 'NewSelectinoController@selection_index');
+    $this::post('/selection_store', 'NewSelectinoController@selection_store');
+    $this::any('/selection_update/{id}', 'NewSelectinoController@selection_update');
+    $this::any('/selection_delete/{id}', 'NewSelectinoController@selection_delete');
+
+
     $this::resource('products', 'ProductController');
     $this::get('/reserves', 'ProductController@reserves');
     $this::get('/reserves/export', 'ProductController@excel_reserve');
@@ -675,6 +690,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['ExpireCheck', 'StatusCheck'
     $this::post('students.store', 'StudentsController@store')->middleware('can:create-member');
     $this::any('student/destroy/{id}', 'StudentsController@destroy')->middleware('can:create-member');
     $this::get('parent', 'StudentsController@parent')->middleware('can:view-member');
+    $this::get('student/card/{id}', 'StudentsController@card')->middleware('can:view-member');
 
 
 //    teacher
@@ -702,6 +718,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['ExpireCheck', 'StatusCheck'
     $this::get('class.create', 'ClassController@create')->middleware('can:manage-classes');
     $this::post('class.store', 'ClassController@store')->middleware('can:manage-classes');
     $this::get('class/destroy/{id}', 'ClassController@destroy')->middleware('can:manage-classes');
+    $this::get('class/students/export/{id}', 'ClassController@students_export')->middleware('can:manage-classes');
 
 //    paye
     $this::get('paye', 'ClassController@paye');
